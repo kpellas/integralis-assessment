@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  integralis-assessment:
+    build: .
+    container_name: integralis-assessment
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - FROM_EMAIL=${FROM_EMAIL:-assessments@integralis.com.au}
+      - FROM_NAME=${FROM_NAME:-Integralis Assessment Team}
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.assessment.rule=Host(`assessment.integralis.com.au`)"
+      - "traefik.http.routers.assessment.tls=true"
+      - "traefik.http.routers.assessment.tls.certresolver=letsencrypt"
+      - "traefik.http.services.assessment.loadbalancer.server.port=8080"
+
+networks:
+  default:
+    external:
+      name: web

@@ -1,0 +1,25 @@
+{
+  "name": "integralis-assessment",
+  "version": "1.0.0",
+  "description": "IT & Cyber Capability Assessment Tool",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "netlify dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "netlify deploy --prod",
+    "docker:build": "docker build -t integralis-assessment .",
+    "docker:run": "docker run -p 8080:8080 --env-file .env integralis-assessment"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "chrome-aws-lambda": "^10.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "puppeteer": "^24.31.0",
+    "puppeteer-core": "^10.1.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0",
+    "serve": "^14.2.0"
+  }
+}
