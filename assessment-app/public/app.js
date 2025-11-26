@@ -640,9 +640,9 @@ async function submitAssessment() {
         };
 
         // Auto-detect API endpoint based on environment
-        const apiEndpoint = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? '/.netlify/functions/generateReport'  // Netlify dev
-            : '/api/generateReport';  // Production/Docker
+        const apiEndpoint = window.location.hostname.includes('netlify.app') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? '/.netlify/functions/generateReport'  // Netlify
+            : '/api/generateReport';  // Docker/other
 
         const response = await fetch(apiEndpoint, {
             method: 'POST',
