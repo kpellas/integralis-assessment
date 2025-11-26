@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT & Cyber Capability Assessment - Acme Professional Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background: #f5f5f5;
+            font-size: 10pt;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            page-break-after: always;
+            position: relative;
+        }
+        
+        @media print {
+            body { background: white; }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+        }
+        
+        /* Header and Footer */
+        .page-header {
+            position: absolute;
+            top: 15mm;
+            left: 20mm;
+            right: 20mm;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2B4F72;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-small {
+            font-weight: 700;
+            color: #2B4F72;
+            font-size: 11pt;
+        }
+        
+        .page-number {
+            color: #666;
+            font-size: 9pt;
+        }
+        
+        .page-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            padding-top: 8px;
+            border-top: 1px solid #ddd;
+            color: #999;
+            font-size: 8pt;
+            text-align: center;
+        }
+        
+        .content {
+            margin-top: 20mm;
+        }
+        
+        /* Cover Page */
+        .cover-content {
+            margin-top: 50mm;
+        }
+        
+        .cover-title {
+            font-size: 24pt;
+            color: #2B4F72;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        
+        .cover-subtitle {
+            font-size: 12pt;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .cover-details {
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #2B4F72;
+        }
+        
+        .cover-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .cover-details td {
+            padding: 8px 0;
+            font-size: 10pt;
+        }
+        
+        .cover-details td:first-child {
+            font-weight: 600;
+            color: #666;
+            width: 140px;
+        }
+        
+        .cover-details td:last-child {
+            color: #333;
+        }
+        
+        .maturity-inline {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #e8f4f8;
+            color: #2B4F72;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 9pt;
+        }
+        
+        /* Typography */
+        h1 {
+            color: #2B4F72;
+            font-size: 16pt;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #2B4F72;
+        }
+        
+        h2 {
+            color: #2B4F72;
+            font-size: 13pt;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        h3 {
+            color: #2B4F72;
+            font-size: 11pt;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        
+        p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        
+        /* Tables */
+        table.score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9pt;
+        }
+        
+        table.score-table th {
+            background: #2B4F72;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 9pt;
+        }
+        
+        table.score-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        table.score-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        table.score-table tr.priority-row {
+            background: #fff3cd;
+        }
+        
+        .score-col {
+            font-weight: 700;
+            color: #2B4F72;
+            text-align: center;
+            width: 60px;
+        }
+        
+        .bar-col {
+            width: 180px;
+        }
+        
+        .bar-container {
+            width: 100%;
+            height: 18px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2B4F72 0%, #4a7ba7 100%);
+            display: flex;
+            align-items: center;
+            padding-left: 6px;
+            color: white;
+            font-weight: 600;
+            font-size: 8pt;
+        }
+        
+        /* Lists */
+        ul {
+            margin: 10px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        ul li {
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 9pt;
+        }
+        
+        ul li:before {
+            content: "▸";
+            color: #2B4F72;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .strength-list li:before {
+            content: "✓";
+            color: #28a745;
+        }
+        
+        .gap-list li:before {
+            content: "⚠";
+            color: #dc3545;
+        }
+        
+        .action-list li:before {
+            content: "→";
+            color: #2B4F72;
+        }
+        
+        /* Boxes */
+        .info-box {
+            background: #f8f9fa;
+            padding: 12px;
+            border-left: 3px solid #2B4F72;
+            margin: 12px 0;
+            font-size: 9pt;
+        }
+        
+        .priority-box {
+            background: #fff3cd;
+            padding: 12px;
+            border-left: 3px solid #ffc107;
+            margin: 12px 0;
+            font-size: 9pt;
+        }
+        
+        /* Pillar Section - Compact */
+        .pillar-compact {
+            margin: 16px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #2B4F72;
+            page-break-inside: avoid;
+        }
+        
+        .pillar-header-compact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .pillar-header-compact h3 {
+            margin: 0;
+            font-size: 11pt;
+        }
+        
+        .pillar-score-inline {
+            font-weight: 700;
+            color: #2B4F72;
+            font-size: 14pt;
+            margin-right: 8px;
+        }
+        
+        .pillar-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 9pt;
+        }
+        
+        .pillar-column h4 {
+            font-size: 9pt;
+            margin-bottom: 6px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .pillar-column ul {
+            margin: 0;
+        }
+        
+        .narrative-text {
+            font-size: 9pt;
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #555;
+        }
+        
+        /* Two-column layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1: COVER PAGE -->
+    <div class="page">
+        <div class="page-header">
+            <div class="logo-small">INTEGRALIS</div>
+        </div>
+        
+        <div class="cover-content">
+            <h1 class="cover-title">IT & Cyber Capability<br>Assessment Report</h1>
+            <p class="cover-subtitle">Maturity Benchmarking Across Five Capability Pillars</p>
+            
+            <div class="cover-details">
+                <table>
+                    <tr>
+                        <td>Organisation:</td>
+                        <td><strong>Acme Professional Services</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Assessment Date:</td>
+                        <td>18 November 2025</td>
+                    </tr>
+                    <tr>
+                        <td>Prepared For:</td>
+                        <td>Sarah Thompson, CIO</td>
+                    </tr>
+                    <tr>
+                        <td>Overall Maturity:</td>
+                        <td><strong>54%</strong> <span class="maturity-inline">Developing</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div style="margin-top: 40px; padding: 16px; background: #e8f4f8; border-radius: 4px;">
+                <h3 style="margin-top: 0; margin-bottom: 12px;">Assessment Overview</h3>
+                <p style="margin-bottom: 8px; text-align: left;">This assessment evaluates organisational maturity across five critical capability areas: ITSM & Service Management, Cyber Security Readiness (Essential 8/ISO/SMB1001), Business Process & Automation, Operational Excellence & Intelligent Automation, and Technical Capability Foundations.</p>
+                <p style="margin-bottom: 0; text-align: left;">The report identifies strengths, gaps, and priority improvement actions based on responses to 35 validated maturity questions.</p>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            Confidential - Prepared for Acme Professional Services | © 2025 Integralis
+        </div>
+    </div>
+
+    <!-- PAGE 2: EXECUTIVE SUMMARY -->
+    <div class="page">
+        <div class="page-header">
+            <div class="logo-small">INTEGRALIS</div>
+            <div class="page-number">Page 2 of 5</div>
+        </div>
+        
+        <div class="content">
+            <h1>Executive Summary</h1>
+            
+            <p><strong>Overall Assessment: 54% (Developing)</strong></p>
+            <p style="font-style: italic; color: #555;">Some structure exists, but consistency, depth, or enforcement is still developing.</p>
+            
+            <p style="margin-top: 12px;">Acme Professional Services demonstrates partial maturity across capability areas. <strong>Operational Excellence</strong> (78%) and <strong>ITSM & Service Management</strong> (67%) show strong performance with established processes. However, <strong>Cyber Security Readiness</strong> (23%) and <strong>Technical Capability Foundations</strong> (45%) require immediate attention to address critical gaps.</p>
+            
+            <h2>Capability Pillar Scores</h2>
+            
+            <table class="score-table">
+                <thead>
+                    <tr>
+                        <th>Capability Pillar</th>
+                        <th class="score-col">Score</th>
+                        <th>Maturity</th>
+                        <th class="bar-col">Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="priority-row">
+                        <td><strong>Cyber Readiness (Essential 8 / ISO / SMB1001)</strong></td>
+                        <td class="score-col"><strong>23%</strong></td>
+                        <td><strong>Foundational</strong></td>
+                        <td class="bar-col">
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 23%;">23%</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="priority-row">
+                        <td><strong>Technical Capability Foundations</strong></td>
+                        <td class="score-col"><strong>45%</strong></td>
+                        <td><strong>Developing</strong></td>
+                        <td class="bar-col">
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 45%;">45%</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Business Process & Automation</td>
+                        <td class="score-col">55%</td>
+                        <td>Developing</td>
+                        <td class="bar-col">
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 55%;">55%</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ITSM & Service Management Maturity</td>
+                        <td class="score-col">67%</td>
+                        <td>Established</td>
+                        <td class="bar-col">
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 67%;">67%</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Operational Excellence & Intelligent Automation</td>
+                        <td class="score-col">78%</td>
+                        <td>Established</td>
+                        <td class="bar-col">
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 78%;">78%</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="priority-box">
+                <h3 style="margin-top: 0;">Immediate Priorities</h3>
+                <p style="margin-bottom: 0;"><strong>Cyber Security Readiness</strong> and <strong>Technical Capability Foundations</strong> are the weakest pillars and represent the greatest risk. These areas should be prioritised over the next 90 days to establish foundational controls and reduce organisational exposure.</p>
+            </div>
+            
+            <h2>Top Recommended Actions</h2>
+            <p style="font-size: 9pt; margin-bottom: 8px;">The following actions are derived from your lowest-scoring areas and represent the highest-value improvements:</p>
+            
+            <ul class="action-list">
+                <li>MFA is not consistently enforced for staff or administrators, leaving accounts exposed to credential-based attacks. <em>(Cyber)</em></li>
+                <li>Endpoint protection is missing or inconsistently deployed across devices, creating significant detection gaps. <em>(Cyber)</em></li>
+                <li>Identity controls are fragmented, manual, or inconsistent. <em>(Tech)</em></li>
+                <li>Devices lack centralised management or consistent baseline enforcement. <em>(Tech)</em></li>
+                <li>Implement MFA for all staff and administrators and enforce it consistently. <em>(Cyber - Template Action)</em></li>
+            </ul>
+        </div>
+        
+        <div class="page-footer">
+            Confidential - Prepared for Acme Professional Services | © 2025 Integralis
+        </div>
+    </div>
+
+    <!-- PAGE 3: CYBER & TECH DETAILS -->
+    <div class="page">
+        <div class="page-header">
+            <div class="logo-small">INTEGRALIS</div>
+            <div class="page-number">Page 3 of 5</div>
+        </div>
+        
+        <div class="content">
+            <h1>Priority Pillar Analysis</h1>
+            
+            <div class="pillar-compact">
+                <div class="pillar-header-compact">
+                    <h3>Cyber Readiness (Essential 8 / ISO / SMB1001)</h3>
+                    <div>
+                        <span class="pillar-score-inline">23%</span>
+                        <span class="maturity-inline">Foundational</span>
+                    </div>
+                </div>
+                
+                <p class="narrative-text">Cyber controls are inconsistent or missing across identity, devices, access, and recovery. The environment is highly vulnerable to common attacks, and several Essential 8 baseline requirements are not met.</p>
+                
+                <div class="pillar-content">
+                    <div class="pillar-column">
+                        <h4>Strengths Identified</h4>
+                        <ul class="strength-list">
+                            <li>Backups are secure, complete, and regularly tested for successful recovery.</li>
+                        </ul>
+                    </div>
+                    <div class="pillar-column">
+                        <h4>Priority Improvements</h4>
+                        <ul class="gap-list">
+                            <li>MFA is not consistently enforced for staff or administrators, leaving accounts exposed to credential-based attacks.</li>
+                            <li>Endpoint protection is missing or inconsistently deployed across devices, creating significant detection gaps.</li>
+                            <li>Patching and vulnerability remediation are irregular or reactive, increasing exposure to known threats.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pillar-compact">
+                <div class="pillar-header-compact">
+                    <h3>Technical Capability Foundations</h3>
+                    <div>
+                        <span class="pillar-score-inline">45%</span>
+                        <span class="maturity-inline">Developing</span>
+                    </div>
+                </div>
+                
+                <p class="narrative-text">Some technical foundations are in place but need consistency, standardisation, and improved governance.</p>
+                
+                <div class="pillar-content">
+                    <div class="pillar-column">
+                        <h4>Strengths Identified</h4>
+                        <ul class="strength-list">
+                            <li>Backup and DR architecture reliably meets RTO/RPO requirements.</li>
+                            <li>Cloud adoption or readiness planning is well-defined and progressing.</li>
+                        </ul>
+                    </div>
+                    <div class="pillar-column">
+                        <h4>Priority Improvements</h4>
+                        <ul class="gap-list">
+                            <li>Identity controls are fragmented, manual, or inconsistent.</li>
+                            <li>Devices lack centralised management or consistent baseline enforcement.</li>
+                            <li>Network segmentation is limited or outdated, increasing lateral movement risk.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Secondary Priority Pillars</h2>
+            
+            <div class="pillar-compact">
+                <div class="pillar-header-compact">
+                    <h3>Business Process & Automation</h3>
+                    <div>
+                        <span class="pillar-score-inline">55%</span>
+                        <span class="maturity-inline">Developing</span>
+                    </div>
+                </div>
+                
+                <p class="narrative-text">Processes show structure but lack maturity, with inconsistent automation or unclear integration.</p>
+                
+                <div class="two-column">
+                    <div>
+                        <h4>Strengths</h4>
+                        <ul class="strength-list">
+                            <li>Business processes are clearly documented and consistently followed.</li>
+                            <li>Training materials and process documentation are updated, accessible, and widely used.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Priority Improvements</h4>
+                        <ul class="gap-list">
+                            <li>Manual processes remain unidentified or unaddressed, limiting efficiency gains.</li>
+                            <li>Apps and systems have poor integration or inconsistent data flow, creating manual work and errors.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            Confidential - Prepared for Acme Professional Services | © 2025 Integralis
+        </div>
+    </div>
+
+    <!-- PAGE 4: ITSM & OPSEX DETAILS -->
+    <div class="page">
+        <div class="page-header">
+            <div class="logo-small">INTEGRALIS</div>
+            <div class="page-number">Page 4 of 5</div>
+        </div>
+        
+        <div class="content">
+            <h1>Established Capability Pillars</h1>
+            
+            <div class="pillar-compact">
+                <div class="pillar-header-compact">
+                    <h3>ITSM & Service Management Maturity</h3>
+                    <div>
+                        <span class="pillar-score-inline">67%</span>
+                        <span class="maturity-inline">Established</span>
+                    </div>
+                </div>
+                
+                <p class="narrative-text">ITSM practices are mature and well-governed. Opportunities remain in automation, optimisation, and proactive service management.</p>
+                
+                <div class="pillar-content">
+                    <div class="pillar-column">
+                        <h4>Strengths Identified</h4>
+                        <ul class="strength-list">
+                            <li>Service desk processes are well-documented and followed consistently across the organisation.</li>
+                            <li>Incidents follow a structured and reliable triage and resolution process.</li>
+                            <li>Changes follow a documented and communicated change management workflow with appropriate approvals.</li>
+                        </ul>
+                    </div>
+                    <div class="pillar-column">
+                        <h4>Improvement Opportunities</h4>
+                        <ul class="gap-list">
+                            <li>Service catalog or self-service functions are unclear or underused, increasing manual workload.</li>
+                            <li>Service performance is not tracked meaningfully, limiting the ability to improve service delivery.</li>
+                            <li>Automate routine workflows in ITSM tooling (assignments, approvals, categorisation).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pillar-compact">
+                <div class="pillar-header-compact">
+                    <h3>Operational Excellence & Intelligent Automation</h3>
+                    <div>
+                        <span class="pillar-score-inline">78%</span>
+                        <span class="maturity-inline">Established</span>
+                    </div>
+                </div>
+                
+                <p class="narrative-text">Operational practices are consistent, automated, and regularly reviewed.</p>
+                
+                <div class="pillar-content">
+                    <div class="pillar-column">
+                        <h4>Strengths Identified</h4>
+                        <ul class="strength-list">
+                            <li>Monitoring and alerting provide strong visibility across systems with proactive issue detection.</li>
+                            <li>Operations follow clearly documented standard procedures.</li>
+                            <li>Routine operational tasks are automated, improving efficiency and consistency.</li>
+                        </ul>
+                    </div>
+                    <div class="pillar-column">
+                        <h4>Optimisation Opportunities</h4>
+                        <ul class="gap-list">
+                            <li>Intelligent automation opportunities remain unimplemented, leading to preventable manual work.</li>
+                            <li>Implement event correlation and automated RCA insights.</li>
+                            <li>Optimise automation coverage and remove remaining manual steps.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>90-Day Improvement Roadmap</h2>
+            <p style="font-size: 9pt;">Focus on your two weakest pillars (Cyber and Technical Capability) to achieve measurable risk reduction within 90 days:</p>
+            
+            <div class="info-box">
+                <h3 style="margin-top: 0;">Phase 1: Days 0-30 (Stabilise)</h3>
+                <ul style="font-size: 8pt;">
+                    <li>Deploy MFA enforcement across all users</li>
+                    <li>Establish monthly patching schedule</li>
+                    <li>Review admin/privileged access accounts</li>
+                    <li>Validate backup integrity and test restore</li>
+                    <li>Implement centralised device management</li>
+                    <li>Document identity lifecycle processes</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3 style="margin-top: 0;">Phase 2: Days 30-90 (Improve)</h3>
+                <ul style="font-size: 8pt;">
+                    <li>Deploy EDR/XDR across all endpoints</li>
+                    <li>Implement basic network segmentation</li>
+                    <li>Configure centralised logging and monitoring</li>
+                    <li>Document incident response procedures</li>
+                    <li>Establish security baseline enforcement</li>
+                    <li>Test DR procedures quarterly</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            Confidential - Prepared for Acme Professional Services | © 2025 Integralis
+        </div>
+    </div>
+
+    <!-- PAGE 5: FRAMEWORK GUIDANCE (SCORE-BASED) -->
+    <div class="page">
+        <div class="page-header">
+            <div class="logo-small">INTEGRALIS</div>
+            <div class="page-number">Page 5 of 5</div>
+        </div>
+        
+        <div class="content">
+            <h1>Framework Recommendations</h1>
+            
+            <p style="font-size: 9pt; margin-bottom: 16px;">The following framework recommendations are based on your assessment scores and reflect realistic readiness for each certification pathway.</p>
+            
+            <!-- Essential 8 (driven by CYBER score: 23% → "low" posture) -->
+            <div class="info-box">
+                <h3 style="margin-top: 0;">Essential 8 <span style="font-weight: normal; color: #666;">(Cyber Score: 23%)</span></h3>
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Posture:</strong> Foundational - Establish Level 1 Baseline</p>
+                <p style="font-size: 9pt; margin-bottom: 8px;">Your cyber security maturity is foundational. Focus on establishing Essential 8 Maturity Level 1 controls across all eight mitigation strategies. Prioritise MFA, patching, and application control as immediate actions.</p>
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Timeline:</strong> Level 1 achievable within 6-9 months with focused effort.</p>
+                <p style="font-size: 8pt; margin-bottom: 4px;"><strong>Next Steps:</strong></p>
+                <ul style="font-size: 8pt; margin-bottom: 0;">
+                    <li>Conduct Essential 8 gap assessment against Level 1 requirements</li>
+                    <li>Prioritise MFA enforcement and patch management</li>
+                    <li>Document current state and create uplift roadmap</li>
+                </ul>
+            </div>
+            
+            <!-- SMB1001 (driven by CYBER+PROCESS+OPSEX avg: 52% → "medium" posture) -->
+            <div class="info-box">
+                <h3 style="margin-top: 0;">SMB1001 <span style="font-weight: normal; color: #666;">(Combined Score: 52%)</span></h3>
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Posture:</strong> Bronze Tier Feasible with Focused Uplift</p>
+                <p style="font-size: 9pt; margin-bottom: 8px;">Your organisation demonstrates sufficient maturity to pursue SMB1001 Bronze certification with focused effort. Bronze provides a practical, achievable baseline that strengthens cyber resilience for small to medium organisations.</p>
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Timeline:</strong> Bronze certification achievable within 6-9 months.</p>
+                <p style="font-size: 8pt; margin-bottom: 4px;"><strong>Next Steps:</strong></p>
+                <ul style="font-size: 8pt; margin-bottom: 0;">
+                    <li>Conduct SMB1001 Bronze gap assessment</li>
+                    <li>Address priority gaps in cyber, process, and operational controls</li>
+                    <li>Engage SMB1001 assessor once Bronze readiness is achieved</li>
+                </ul>
+            </div>
+            
+            <!-- ISO 27001 (driven by overall score: 54% → "medium" posture) -->
+            <div class="info-box">
+                <h3 style="margin-top: 0;">ISO 27001 <span style="font-weight: normal; color: #666;">(Overall Score: 54%)</span></h3>
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Posture:</strong> Begin Alignment - Certification is a Medium-Term Goal</p>
+                <p style="font-size: 9pt; margin-bottom: 8px;">Your organisation demonstrates sufficient maturity to begin ISO 27001 alignment activities. Certification is achievable as a medium-term goal (12-18 months) with structured ISMS development and gap remediation.</p>
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Timeline:</strong> ISO 27001 certification achievable within 12-18 months.</p>
+                <p style="font-size: 8pt; margin-bottom: 4px;"><strong>Next Steps:</strong></p>
+                <ul style="font-size: 8pt; margin-bottom: 0;">
+                    <li>Conduct ISO 27001 gap assessment against Annex A controls</li>
+                    <li>Establish ISMS framework and document management system</li>
+                    <li>Address priority gaps and build toward Stage 1 audit readiness</li>
+                </ul>
+            </div>
+            
+            <h2>How Integralis Can Help</h2>
+            
+            <div style="background: #e8f4f8; padding: 14px; border-radius: 4px; margin: 12px 0;">
+                <p style="font-size: 9pt; margin-bottom: 8px;"><strong>Based on your assessment results, the area where we can provide quickest impact is Cyber Security Readiness.</strong></p>
+                <p style="font-size: 9pt; margin-bottom: 0;">We can help establish MFA enforcement, patching schedules, endpoint protection, and begin Essential 8 or SMB1001 alignment within 30-60 days.</p>
+            </div>
+            
+            <p style="font-size: 9pt; margin-top: 14px; margin-bottom: 8px;"><strong>Our services include:</strong></p>
+            <ul style="font-size: 8pt; margin-bottom: 12px;">
+                <li>Cyber security gap assessments and Essential 8/SMB1001 implementation</li>
+                <li>ITSM design, implementation, and maturity uplift (ServiceNow, FreshService)</li>
+                <li>Technical infrastructure assessment and modernisation</li>
+                <li>Business process automation and workflow integration</li>
+                <li>Managed security services and ongoing operational support</li>
+            </ul>
+            
+            <div class="info-box">
+                <h3 style="margin-top: 0;">Contact Information</h3>
+                <p style="font-size: 9pt; margin-bottom: 0;">
+                    <strong>Email:</strong> contact@integralis.com.au<br>
+                    <strong>Website:</strong> www.integralis.com.au<br>
+                    <strong>Response Time:</strong> We typically respond within 24 hours
+                </p>
+            </div>
+            
+            <div style="margin-top: 24px; padding-top: 12px; border-top: 2px solid #2B4F72; text-align: center;">
+                <p style="font-size: 9pt; color: #666; margin-bottom: 0;">
+                    <strong>Thank you for completing the IT & Cyber Capability Assessment</strong><br>
+                    Report generated 18 November 2025 for Acme Professional Services
+                </p>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            Confidential - Prepared for Acme Professional Services | © 2025 Integralis
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Test</title>
+</head>
+<body>
+    <h1>Testing JSON Loading</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testJsonLoading() {
+            const results = document.getElementById('results');
+            
+            try {
+                console.log('Fetching questions.json...');
+                const questionsResponse = await fetch('/config/questions.json');
+                const questionsText = await questionsResponse.text();
+                console.log('Questions response (first 100 chars):', questionsText.substring(0, 100));
+                
+                // Check for BOM or other issues
+                if (questionsText.charCodeAt(0) === 0xFEFF) {
+                    console.error('BOM detected in questions.json!');
+                }
+                
+                const questionsData = JSON.parse(questionsText);
+                results.innerHTML += `<p>✅ questions.json loaded: ${Object.keys(questionsData).length} questions</p>`;
+                
+                console.log('Fetching pillars.json...');
+                const pillarsResponse = await fetch('/config/pillars.json');
+                const pillarsText = await pillarsResponse.text();
+                console.log('Pillars response (first 100 chars):', pillarsText.substring(0, 100));
+                
+                const pillarsData = JSON.parse(pillarsText);
+                results.innerHTML += `<p>✅ pillars.json loaded: ${Object.keys(pillarsData).length} pillars</p>`;
+                
+                console.log('Fetching level-descriptors.json...');
+                const descriptorsResponse = await fetch('/config/level-descriptors.json');
+                const descriptorsText = await descriptorsResponse.text();
+                console.log('Descriptors response (first 100 chars):', descriptorsText.substring(0, 100));
+                
+                const descriptorsData = JSON.parse(descriptorsText);
+                results.innerHTML += `<p>✅ level-descriptors.json loaded: ${Object.keys(descriptorsData).length} descriptors</p>`;
+                
+            } catch (error) {
+                console.error('Error details:', error);
+                results.innerHTML += `<p style="color:red">❌ Error: ${error.message}</p>`;
+                results.innerHTML += `<pre>${error.stack}</pre>`;
+            }
+        }
+        
+        testJsonLoading();
+    </script>
+</body>
+</html>

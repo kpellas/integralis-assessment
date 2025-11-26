@@ -1,0 +1,13 @@
+{
+  "1": {
+    "question": "Service desk processes are structured and consistently followed.",
+    "levels": {
+      "0": "No consistent logging; issues raised informally or lost in Teams/email.",
+      "1": "Some issues captured in a tool, others handled outside the process.",
+      "2": "Using a system but categories, triage or workflows are inconsistent.",
+      "3": "Process documented but not reliably followed across all teams.",
+      "4": "Standard process followed consistently with clear triage and escalation.",
+      "5": "Process is measured, refined, and continuously improved."
+    }
+  }
+}

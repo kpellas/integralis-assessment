@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug PDF Generation</title>
+    <script>
+        async function testPDF() {
+            const testData = {
+                organisation: "Test Company Pty Ltd",
+                contactName: "John Smith",
+                contactEmail: "john@testcompany.com.au",
+                downloadOnly: true,
+                answers: {}
+            };
+            
+            // Generate test answers with varied scores
+            for (let i = 1; i <= 35; i++) {
+                // Mix of scores: some high (strengths), some low (gaps), some medium
+                if (i % 5 === 0) {
+                    testData.answers[`q${i}`] = 90; // Strength
+                } else if (i % 7 === 0) {
+                    testData.answers[`q${i}`] = 20; // Gap
+                } else if (i % 3 === 0) {
+                    testData.answers[`q${i}`] = 60; // Medium
+                } else {
+                    testData.answers[`q${i}`] = 40 + (i * 2); // Varied
+                }
+            }
+            
+            console.log('Sending test data:', testData);
+            
+            try {
+                const response = await fetch('/.netlify/functions/generateReport', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                if (response.headers.get('content-type')?.includes('application/json')) {
+                    // Local development with download URL
+                    const result = await response.json();
+                    console.log('Response:', result);
+                    if (result.downloadUrl) {
+                        window.location.href = result.downloadUrl;
+                    }
+                } else {
+                    // Production with direct PDF
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `IT-Assessment-Debug-${new Date().toISOString().split('T')[0]}.pdf`;
+                    a.click();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating PDF: ' + error.message);
+            }
+        }
+        
+        window.onload = () => {
+            document.getElementById('generate').addEventListener('click', testPDF);
+        };
+    </script>
+</head>
+<body>
+    <h1>Debug PDF Generation</h1>
+    <button id="generate">Generate Test PDF</button>
+    <p>Check browser console for details</p>
+</body>
+</html>

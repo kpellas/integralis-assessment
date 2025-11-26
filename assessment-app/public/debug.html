@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug JSON Loading</title>
+</head>
+<body>
+    <h1>Debug JSON Loading</h1>
+    <button onclick="testFetch()">Test Fetch</button>
+    <pre id="output"></pre>
+    
+    <script>
+        async function testFetch() {
+            const output = document.getElementById('output');
+            output.textContent = 'Testing...\n\n';
+            
+            try {
+                // Test each file individually
+                const files = [
+                    '/config/questions.json',
+                    '/config/pillars.json', 
+                    '/config/level-descriptors.json'
+                ];
+                
+                for (const file of files) {
+                    output.textContent += `Fetching ${file}...\n`;
+                    
+                    const response = await fetch(file);
+                    const text = await response.text();
+                    
+                    output.textContent += `Response length: ${text.length}\n`;
+                    output.textContent += `First 50 chars: ${text.substring(0, 50)}\n`;
+                    output.textContent += `First char code: ${text.charCodeAt(0)}\n`;
+                    
+                    // Try to parse
+                    try {
+                        const data = JSON.parse(text);
+                        output.textContent += `✓ Parsed successfully. Keys: ${Object.keys(data).length}\n\n`;
+                    } catch (e) {
+                        output.textContent += `✗ Parse error: ${e.message}\n`;
+                        output.textContent += `Error at position: ${e.message.match(/position (\d+)/)?.[1] || 'unknown'}\n`;
+                        
+                        // Show the problematic part
+                        const pos = parseInt(e.message.match(/position (\d+)/)?.[1] || '0');
+                        if (pos > 0) {
+                            output.textContent += `Text around position ${pos}: "${text.substring(Math.max(0, pos-10), pos+10)}"\n`;
+                        }
+                        output.textContent += `\n`;
+                    }
+                }
+                
+            } catch (error) {
+                output.textContent += `\nFetch error: ${error.message}\n`;
+            }
+        }
+        
+        // Auto-run on load
+        window.addEventListener('DOMContentLoaded', testFetch);
+    </script>
+</body>
+</html>

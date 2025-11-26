@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Preview Report HTML</title>
+    <script>
+        async function previewHTML() {
+            const testData = {
+                organisation: "Test Company Pty Ltd",
+                contactName: "John Smith",
+                contactEmail: "john@testcompany.com.au",
+                downloadOnly: false,  // Get the summary response
+                answers: {}
+            };
+            
+            // Generate test answers
+            for (let i = 1; i <= 35; i++) {
+                if (i % 5 === 0) {
+                    testData.answers[`q${i}`] = 85; // Strength
+                } else if (i % 7 === 0) {
+                    testData.answers[`q${i}`] = 25; // Gap
+                } else {
+                    testData.answers[`q${i}`] = 50 + (i % 30); // Varied
+                }
+            }
+            
+            try {
+                const response = await fetch('/.netlify/functions/generateReport', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+                
+                const result = await response.json();
+                document.getElementById('result').innerHTML = `
+                    <h3>Summary Response:</h3>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                    <p>Overall Score: ${result.overallScore}</p>
+                    <p>Overall Level: ${result.overallLevel}</p>
+                    <h4>Pillar Scores:</h4>
+                    <ul>
+                        ${result.pillarScores.map(p => `<li>${p.name}: ${p.score} (${p.level})</li>`).join('')}
+                    </ul>
+                `;
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Preview Report Generation</h1>
+    <button onclick="previewHTML()">Generate Summary (no PDF)</button>
+    <div id="result"></div>
+</body>
+</html>

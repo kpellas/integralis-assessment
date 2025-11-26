@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT & Cyber Capability Assessment - Questions Review</title>
+    <style>
+        body {
+            font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
+            background: white;
+        }
+        
+        @media print {
+            body { margin: 0; padding: 15mm; }
+            .page-break { page-break-before: always; }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #2B4F72;
+        }
+        
+        h1 {
+            color: #2B4F72;
+            font-size: 24pt;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 12pt;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .overview {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #2B4F72;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #2B4F72;
+            font-size: 16pt;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #2B4F72;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+        }
+        
+        .question-header {
+            font-weight: 600;
+            color: #2B4F72;
+            font-size: 12pt;
+            margin-bottom: 8px;
+        }
+        
+        .question-text {
+            font-size: 11pt;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .answer-options {
+            margin-left: 10px;
+        }
+        
+        .answer-option {
+            margin-bottom: 12px;
+            padding: 8px;
+            border-left: 3px solid #ddd;
+            background: white;
+        }
+        
+        .answer-option.not-in-place { border-color: #dc3545; }
+        .answer-option.ad-hoc { border-color: #fd7e14; }
+        .answer-option.partially-implemented { border-color: #ffc107; }
+        .answer-option.defined-inconsistent { border-color: #20c997; }
+        .answer-option.consistently-applied { border-color: #28a745; }
+        .answer-option.mature-optimised { border-color: #6f42c1; }
+        
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 10pt;
+        }
+        
+        .option-description {
+            font-size: 9pt;
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        .pillar-summary {
+            background: #e8f4f8;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 9pt;
+            color: #555;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            font-size: 9pt;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IT & Cyber Capability Assessment</h1>
+        <div class="subtitle">Questions Review Document</div>
+        <div class="subtitle">35 Questions across 5 Capability Pillars</div>
+    </div>
+    
+    <div class="overview">
+        <h3 style="margin-top: 0;">Assessment Overview</h3>
+        <p><strong>Purpose:</strong> This document provides all 35 assessment questions and their response options for stakeholder review.</p>
+        
+        <p><strong>Structure:</strong> 5 capability pillars × 7 questions each = 35 total questions</p>
+        
+        <p><strong>Answer Scale:</strong> Each question uses a 6-point maturity scale from "Not in place" (lowest) to "Mature/Optimised" (highest).</p>
+        
+        <p><strong>Scoring:</strong> Responses are converted to numerical scores: Not in place (20), Ad hoc (40), Partially implemented (60), Defined but inconsistently applied (80), Consistently applied (90), Mature/Optimised (100).</p>
+    </div>
+
+    <!-- PILLAR 1: ITSM -->
+    <h2>1. ITSM & Service Management Maturity</h2>
+    <div class="pillar-summary">
+        <strong>Focus Area:</strong> Service desk processes, incident management, change control, knowledge management, service catalogue, SLAs, and continuous improvement practices.
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 1 of 35: Service Desk Process Consistency</div>
+        <div class="question-text">Service desk processes for incident, request, and escalation are documented and consistently followed.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No defined service desk process exists; issues are raised informally via email, chat, or verbally and may be lost or duplicated.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some issues are captured in a system, but many are handled outside any formal process and there is no consistent way of working.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">A service desk tool and basic process exist, but categories, triage rules, or workflows are incomplete or not used consistently across teams.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">The service desk process is documented and communicated, but different teams and individuals still bypass or interpret it differently.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">The documented service desk process is followed across teams with clear triage, categorisation, and escalation, and exceptions are rare.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Service desk processes are consistently applied, measured, and regularly improved using data, feedback, and lessons learned.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 2 of 35: Incident Management Maturity</div>
+        <div class="question-text">Incidents are logged, triaged, and resolved using a defined incident management framework.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Incidents are handled informally with no consistent logging, triage, or escalation process.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some incidents are logged, but triage and escalation are inconsistent or manual, with frequent bypassing of processes.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">An incident management tool exists with basic workflows, but classification, priority rules, or escalation paths are incomplete.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Incident management processes are documented, but different teams may bypass or interpret procedures differently; Major Incident runbooks and PIRs exist but are not consistently executed or followed through with actions.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Incidents follow a reliable framework with consistent logging, triage, and escalation across all teams; Major Incident runbooks and PIRs are executed consistently with proper follow-through on actions.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Incident management is mature with strong metrics, automated workflows, and regular process improvements; Major Incident procedures and PIRs drive measurable improvements and trend analysis prevents recurring issues.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 3 of 35: Change Management Control</div>
+        <div class="question-text">Changes follow a documented change management process including approvals and communication.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Changes are made without formal documentation, approval, or communication, increasing risk of conflicts and outages.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some changes are documented or communicated, but there is no consistent approval process or change control.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">A change process exists for some types of changes, but coverage is incomplete or approval workflows are not enforced.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Change management procedures are documented but may be bypassed for urgent changes or interpreted differently across teams; Normal, Standard, and Emergency change paths are defined but not applied consistently.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Changes consistently follow documented procedures with proper approvals and communication; Normal, Standard, and Emergency change paths are applied reliably with rare exceptions.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Change management is data-driven with mature Normal, Standard, and Emergency processes; CAB reviews, success metrics, and automated workflows drive continuous refinement and risk reduction.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 4 of 35: Knowledge Management</div>
+        <div class="question-text">Knowledge articles are documented, updated, and used to support consistent service delivery.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Knowledge is stored informally (emails, personal notes) with no central documentation or sharing.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some knowledge articles exist but are scattered, outdated, or not regularly used by staff.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">A knowledge base exists with some articles, but content is incomplete, outdated, or difficult to find.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Knowledge management processes are documented, but articles are not regularly updated or consistently used across teams.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Knowledge articles are current, easily accessible, and actively used by staff to support consistent service delivery.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Knowledge management is automated where possible, with regular reviews, user feedback, and analytics to optimise content effectiveness.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 5 of 35: Service Catalog & Self-Service</div>
+        <div class="question-text">A clear service catalog and self-service portal is available and used effectively.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No service catalog exists; users contact IT through informal channels without clear service options.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some services are documented informally, but there is no central catalog or self-service capability.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">A basic service catalog exists, but coverage is incomplete or self-service options are limited.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Service catalog is available but may be outdated, unclear, or underutilised by users who still contact IT directly.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">A clear service catalog and self-service portal are available and effectively used, reducing manual workload.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Service catalog is comprehensive with advanced self-service automation, user analytics, and continuous improvement based on usage data.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 6 of 35: SLAs & Performance Visibility</div>
+        <div class="question-text">SLAs, KPIs, and service performance metrics are tracked and reviewed regularly.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No SLAs or performance metrics are defined or tracked for IT services.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some informal performance expectations exist, but no formal SLAs or consistent measurement occurs.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic SLAs exist for some services, but measurement is incomplete or not regularly reviewed.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">SLAs and KPIs are documented but measurement and reporting are inconsistent or not actionable.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">SLAs, KPIs, and service performance metrics are actively tracked, reviewed, and used to drive improvements.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Performance management includes predictive analytics, automated reporting, and proactive service optimisation based on trends.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 7 of 35: Continual Service Improvement</div>
+        <div class="question-text">Continuous improvement practices are embedded into service management operations.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No formal improvement processes exist; changes are reactive and based on individual initiatives.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some improvements occur sporadically, but there is no systematic approach or regular review cycle.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic improvement processes exist, but they are not consistently applied or may lack data-driven decision making.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Improvement processes are documented but may not be regularly followed or may lack integration with daily operations.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Continuous improvement practices are embedded and consistently applied across service management operations.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Improvement is proactive and data-driven, with automation, trend analysis, and integration with strategic business outcomes.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- PILLAR 2: CYBER -->
+    <h2>2. Cyber Readiness</h2>
+    <div class="pillar-summary">
+        <strong>Focus Area:</strong> Multi-factor authentication, endpoint protection, patching, backups, access controls, monitoring, and alignment with cyber frameworks (Essential 8, ISO 27001, SMB1001).
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 8 of 35: MFA and Identity Protections</div>
+        <div class="question-text">Multi-factor authentication (MFA) is enforced for all staff and all administrator accounts.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">MFA is not implemented for staff or administrator accounts, relying only on passwords.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">MFA is available but not consistently enforced; some users or administrators may bypass it.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">MFA is enforced for some accounts (e.g., administrators) but not all staff, or coverage is incomplete across systems.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">MFA policy exists and is mostly enforced, but some exceptions exist or enforcement is not uniform across all systems.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">MFA is fully enforced for all staff and administrator accounts across all relevant systems.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">MFA implementation includes conditional access, risk-based authentication, and regular reviews of authentication methods and compliance.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 9 of 35: Endpoint Protection (EDR/XDR)</div>
+        <div class="question-text">Endpoint protection (EDR or next-gen antivirus) is deployed across laptops, workstations, and servers.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No endpoint protection is deployed, or only basic/legacy antivirus without modern threat detection capabilities.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some endpoint protection exists but coverage is sporadic, inconsistent, or not centrally managed.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Endpoint protection is deployed on most devices but some gaps exist, or the solution lacks advanced features like EDR.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Comprehensive endpoint protection policy exists but implementation may have gaps or inconsistent configuration across devices.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">All devices have endpoint protection deployed and actively reporting, with central management and monitoring.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced endpoint protection (EDR/XDR) with automated response, threat hunting, and integration with broader security operations.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 10 of 35: Patching and Vulnerability Remediation</div>
+        <div class="question-text">Patching and vulnerability remediation occur on a regular, enforced schedule.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Patching is reactive or non-existent, with systems potentially running outdated software with known vulnerabilities.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Patching occurs irregularly or only when issues arise, without a systematic schedule or vulnerability management process.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Some regular patching occurs, but coverage is incomplete or scheduling is inconsistent across different systems.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Patching schedule and procedures are documented but may not be consistently followed or may have frequent exceptions.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Patching and vulnerability remediation are consistently performed following a defined schedule across all systems.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Automated vulnerability scanning, risk-based patching priorities, and comprehensive tracking with metrics and continuous improvement.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 11 of 35: Backup Reliability and Testing</div>
+        <div class="question-text">Backups are reliable, secure, and regularly tested for recovery.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No reliable backup system exists, or backups are not performed regularly, creating high risk of data loss.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some backup procedures exist but are inconsistent, not tested, or may not cover all critical data.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Regular backups are performed for some systems but testing is limited or backup coverage is incomplete.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Backup procedures are documented and mostly followed, but testing may be irregular or not comprehensive.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Backups are secure, complete, and regularly tested for successful recovery with documented procedures.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Automated backup validation, regular recovery testing, offsite/cloud replication, and comprehensive disaster recovery capabilities.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 12 of 35: Admin Rights and Least Privilege</div>
+        <div class="question-text">Admin rights are restricted, monitored, and follow least-privilege principles.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Admin rights are not controlled; many users may have unnecessary administrative privileges.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some awareness of admin rights exists, but control is inconsistent and least-privilege is not systematically enforced.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic admin rights controls exist, but monitoring is limited or least-privilege principles are not fully applied.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Admin rights policies are documented but enforcement may be inconsistent or monitoring may have gaps.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Admin rights are tightly controlled with strong least-privilege enforcement and regular monitoring.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Privileged access management (PAM) with just-in-time access, automated monitoring, and comprehensive audit trails.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 13 of 35: Logging and Monitoring</div>
+        <div class="question-text">Logging, alerting, and monitoring are enabled for critical systems.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Minimal or no logging and monitoring exists for critical systems, creating significant security blind spots.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic logging exists but is not centrally collected, monitored, or used for security purposes.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Logging is enabled for some critical systems but coverage is incomplete or alerting is basic.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Logging and monitoring policies exist but implementation may have gaps or alerts may not be properly configured.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Logging and alerting are consistently enabled and monitored across critical systems with appropriate response procedures.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive SIEM/SOAR with automated threat detection, correlation, response workflows, and threat intelligence integration.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 14 of 35: Framework Alignment (E8/ISO/SMB1001)</div>
+        <div class="question-text">Cyber controls are aligned with Essential 8, ISO 27001, or SMB1001 requirements.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No formal alignment with cyber security frameworks; controls are ad hoc or based on vendor recommendations.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some awareness of frameworks exists, but no systematic mapping or implementation against specific requirements.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Some framework requirements are addressed, but coverage is incomplete or implementation is inconsistent.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Framework alignment is planned and partially implemented, but gaps remain or documentation is incomplete.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Cyber controls are well aligned with Essential 8, ISO 27001, or SMB1001 requirements with documented compliance.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Full framework compliance with continuous monitoring, regular assessments, and integration with business risk management.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Continue with remaining pillars... -->
+    <!-- PILLAR 3: PROCESS -->
+    <h2>3. Business Process & Automation</h2>
+    <div class="pillar-summary">
+        <strong>Focus Area:</strong> Process documentation, workflow automation, system integration, approval workflows, training materials, process metrics, and cross-team coordination.
+    </div>
+    
+    <div class="question-block">
+        <div class="question-header">Question 15 of 35: Process Documentation</div>
+        <div class="question-text">Core business processes are documented and consistently followed.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Business processes are informal or tribal knowledge; minimal documentation exists.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some processes are documented informally, but coverage is sporadic and documentation may be outdated.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Key processes have basic documentation, but it may be incomplete, inconsistent, or not regularly updated.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Process documentation exists and is mostly current, but adherence varies across teams or situations.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Business processes are clearly documented and consistently followed across the organisation.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Process documentation is comprehensive, regularly reviewed, version-controlled, and integrated with training and improvement cycles.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Continue with questions 16-21 for PROCESS pillar -->
+    <div class="question-block">
+        <div class="question-header">Question 16 of 35: Workflow Automation Adoption</div>
+        <div class="question-text">Manual processes have been identified and prioritised for automation.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Manual processes are not systematically identified or considered for automation.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some automation exists but was implemented reactively without systematic planning or prioritisation.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Manual processes have been partially identified and some automation has been implemented, but coverage is limited.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Process automation strategy exists but implementation is inconsistent or lacks proper prioritisation.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Manual processes have been identified, prioritised, and some are already automated with ongoing implementation plans.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive automation program with ROI analysis, continuous identification of automation opportunities, and advanced workflow tools.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 17 of 35: Integration & Data Flow</div>
+        <div class="question-text">Systems and applications integrate effectively with clear data flows.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Systems operate in silos with minimal integration; data transfer is largely manual or via exports/imports.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic integrations exist but are inconsistent, fragile, or require manual intervention.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Key systems have basic integration, but data flow may be incomplete or some manual processes remain.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Integration standards exist but implementation is inconsistent or some systems remain poorly integrated.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Applications are well-integrated with reliable data flow and minimal duplication or manual intervention.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Enterprise integration platform with real-time data flows, API management, monitoring, and automated data governance.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 18 of 35: Approval Workflow Automation</div>
+        <div class="question-text">Approvals and authorisations use automated workflows rather than email-based processes.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Approvals are handled manually through email, phone calls, or informal processes without systematic tracking.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some approval processes exist but are largely email-based or manual without consistent workflow management.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic workflow automation exists for some approval processes, but coverage is limited or inconsistent.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Automated approval workflows are defined and partially implemented but may not be used consistently.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Approval workflows are automated, consistent, and reduce manual delays across key business processes.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced workflow automation with conditional routing, escalation, analytics, and integration with business systems.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 19 of 35: Documentation & Training</div>
+        <div class="question-text">Process documentation and training materials are current and easily accessible.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Training materials are minimal or non-existent; new staff learn through informal knowledge transfer.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some training materials exist but may be outdated, incomplete, or difficult to access.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic training materials exist for key processes but may not be comprehensive or regularly updated.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Training materials are available but may not be consistently used or maintained across all processes.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Training materials and process documentation are updated, accessible, and widely used across the organisation.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive learning management system with interactive training, competency tracking, and continuous content improvement.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 20 of 35: Process Metrics</div>
+        <div class="question-text">Operational processes have defined metrics and are monitored regularly.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Process performance is not measured; success is evaluated informally or anecdotally.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic metrics may be collected occasionally but without systematic monitoring or analysis.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic metrics are defined for some processes but monitoring is inconsistent or limited in scope.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Process metrics are defined but collection and analysis may be inconsistent or not actionable.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Process metrics are well-defined, tracked, and used to optimise performance and identify improvements.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced analytics with real-time dashboards, predictive indicators, and automated alerts for process optimization.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 21 of 35: Cross-team Workflows</div>
+        <div class="question-text">Cross-team workflows are well-defined and minimise handoff delays.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Cross-team processes are informal or undefined; handoffs often result in delays or confusion.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some cross-team processes exist but are inconsistent and may frequently break down or cause delays.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic cross-team workflows are documented but may not be optimised or consistently followed.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Cross-team workflows are defined but execution may be inconsistent or subject to frequent exceptions.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Cross-team workflows are structured, reducing handoff delays and errors with clear accountability.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Optimised cross-team workflows with automation, real-time tracking, and continuous improvement based on performance data.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- PILLAR 4: OPSEX -->
+    <h2>4. Operational Excellence</h2>
+    <div class="pillar-summary">
+        <strong>Focus Area:</strong> System monitoring, standard operating procedures, task automation, intelligent tools, capacity management, incident analysis, and operational governance.
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 22 of 35: Monitoring & Alerting</div>
+        <div class="question-text">Monitoring and alerting are in place for key systems and respond to issues proactively.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Minimal monitoring exists; issues are typically discovered by users rather than proactive detection.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Basic monitoring exists for some systems but coverage is incomplete and alerting may be unreliable.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Monitoring covers key systems but may miss important components, or alerting is not optimally configured.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Monitoring standards exist but implementation may have gaps or alert response is inconsistent.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Monitoring and alerting provide strong visibility across systems with proactive issue detection and response.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced monitoring with AI-driven analytics, predictive alerting, and automated remediation for common issues.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Continue with questions 23-28 for OPSEX pillar -->
+    <div class="question-block">
+        <div class="question-header">Question 23 of 35: Standardised Operating Procedures</div>
+        <div class="question-text">Standard operating procedures are well-defined and used consistently across operations.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Operating procedures are informal or non-existent; tasks are performed based on individual knowledge.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some procedures exist but are inconsistent, outdated, or not regularly followed by operational staff.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic standard procedures exist for key operations but coverage may be incomplete or documentation unclear.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Standard procedures are documented but adherence varies or procedures may not be kept current.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Operations follow clearly documented standard procedures that are consistently applied across teams.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive procedures with version control, regular reviews, automated compliance checking, and continuous improvement.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 24 of 35: Automation of Routine Tasks</div>
+        <div class="question-text">Routine tasks (provisioning, checks, updates) are automated where possible.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Most operational tasks are performed manually without systematic automation.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic automation exists but is limited, inconsistent, or created reactively without planning.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Key routine tasks have some automation but coverage is incomplete or reliability may be inconsistent.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Automation strategy exists but implementation is inconsistent or some teams may bypass automated processes.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Routine operational tasks are automated, improving efficiency and consistency across operations.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive automation with intelligent orchestration, self-healing systems, and continuous optimization of automated processes.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 25 of 35: Intelligent Tools (AI-Assisted)</div>
+        <div class="question-text">Intelligent tools (AI-assisted or advanced rules-based automation) support operational decision-making and reduce manual workload.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No intelligent automation tools are in use; decisions and processes rely entirely on manual analysis.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic rules-based tools exist but are limited in scope and not integrated into operational workflows.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic intelligent tools are in use for some operations but coverage is limited or tools are underutilised.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Intelligent automation strategy exists but implementation is inconsistent or adoption is variable across teams.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Intelligent or rules-based tools successfully support decision-making and reduce manual effort across operations.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced AI/ML tools with predictive capabilities, automated decision-making, and continuous learning from operational data.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 26 of 35: Capacity & Availability Management</div>
+        <div class="question-text">Capacity and availability management are monitored and reviewed to prevent outages.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Capacity and availability are not systematically monitored; issues are typically reactive.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Basic monitoring exists but capacity planning and availability management are irregular or incomplete.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Some capacity and availability monitoring exists but may not cover all critical systems or lack proactive planning.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Capacity and availability processes are defined but implementation or review cycles may be inconsistent.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Capacity and availability are routinely monitored with proactive mitigation and regular planning reviews.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced capacity planning with predictive analytics, automated scaling, and comprehensive availability engineering practices.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 27 of 35: Event Correlation & Root Cause Analysis</div>
+        <div class="question-text">Incident patterns and root causes are identified through event correlation.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Incidents are handled individually without systematic analysis of patterns or root causes.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic incident analysis occurs but is not systematic and may miss recurring patterns or root causes.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic root cause analysis is performed for major incidents but event correlation and pattern analysis are limited.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">RCA processes exist but may not be consistently followed or event correlation capabilities are underutilised.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Event correlation and RCA processes effectively identify recurring issues and drive systematic improvements.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced analytics with automated pattern detection, predictive incident analysis, and proactive issue prevention.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 28 of 35: Operational Governance</div>
+        <div class="question-text">Operational reviews and governance meetings occur regularly with actionable outcomes.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No formal operational governance exists; decisions are made reactively or informally.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Occasional operational meetings occur but without consistent agenda, outcomes, or follow-through.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Regular operational meetings exist but may lack structure, accountability, or consistent actionable outcomes.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Governance processes are defined but meetings may be irregular or outcomes may not be consistently implemented.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Governance meetings drive consistent operational improvements with clear accountability and regular follow-up.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive governance with data-driven decisions, automated reporting, and strategic alignment with business outcomes.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- PILLAR 5: TECH -->
+    <h2>5. Technical Capability Foundations</h2>
+    <div class="pillar-summary">
+        <strong>Focus Area:</strong> Identity management, device management, network security, backup/disaster recovery, cloud readiness, platform governance, and observability practices.
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 29 of 35: Identity & Access Management</div>
+        <div class="question-text">Identity and access management is centralised with strong lifecycle processes.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Identity management is decentralised or manual; no systematic joiner/mover/leaver processes exist.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some identity processes exist but are largely manual, inconsistent, or lack central coordination.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic centralised identity management exists but lifecycle processes may be incomplete or not fully automated.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Identity management processes are defined but implementation may have gaps or inconsistencies across systems.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Identity lifecycle is centralised with strong joiner/mover/leaver controls and consistent access management.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced identity governance with automated provisioning, regular access reviews, and integration with HR and business systems.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Continue with questions 30-35 for TECH pillar -->
+    <div class="question-block">
+        <div class="question-header">Question 30 of 35: Device Management</div>
+        <div class="question-text">Devices are centrally managed with enforced security baselines.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Devices are not centrally managed; configuration and security vary significantly across endpoints.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some device management exists but is inconsistent, manual, or lacks comprehensive security baseline enforcement.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic device management is in place but coverage may be incomplete or baseline enforcement inconsistent.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Device management policies exist but implementation or compliance may be inconsistent across device types.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Devices are centrally managed with enforced baselines and compliance reporting across all endpoint types.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced device management with zero-touch deployment, continuous compliance monitoring, and automated remediation capabilities.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 31 of 35: Network Segmentation & Security</div>
+        <div class="question-text">Network segmentation and security controls follow modern best practices.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Network is largely flat with minimal segmentation or security controls beyond basic firewall rules.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic network security exists but segmentation is limited and controls may be outdated or inconsistent.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic network segmentation exists but may not follow modern practices or have comprehensive security controls.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Network security strategy exists but implementation may have gaps or inconsistent application of segmentation policies.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Network segmentation and security controls follow strong modern best practices with consistent implementation.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced network security with micro-segmentation, zero-trust principles, and automated threat detection and response.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 32 of 35: Backup & DR Architecture</div>
+        <div class="question-text">Backup and disaster recovery architecture meets defined RTO/RPO requirements.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No formal disaster recovery plan exists; backup systems may be inadequate for business requirements.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Basic backup procedures exist but disaster recovery planning is informal and RTO/RPO requirements are undefined.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic DR plan exists but may not meet all business requirements or testing is insufficient to validate recovery capabilities.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">DR architecture is designed but implementation may have gaps or regular testing is not comprehensive.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Backup and DR architecture reliably meets RTO/RPO requirements with regular testing and validation.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced DR capabilities with automated failover, continuous replication, and regular business continuity exercises.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 33 of 35: Cloud Readiness</div>
+        <div class="question-text">Applications and infrastructure have clear cloud readiness or cloud adoption strategies.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">No cloud strategy exists; systems are primarily on-premises without cloud readiness assessment.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some cloud services may be in use but without systematic strategy or readiness planning for broader adoption.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic cloud strategy exists but readiness assessment and migration planning may be incomplete or limited in scope.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Cloud adoption strategy is defined but implementation may be inconsistent or lack systematic readiness assessment.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Cloud adoption or readiness planning is well-defined and progressing systematically across applications and infrastructure.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced cloud-native architecture with comprehensive automation, governance, and optimisation across hybrid/multi-cloud environments.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 34 of 35: Tooling & Platform Governance</div>
+        <div class="question-text">Platforms and tooling have clear governance, admin roles, and lifecycle processes.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Platform governance is informal or non-existent; tool adoption and administration lack systematic oversight.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some platform governance exists but is inconsistent, reactive, or lacks clear administrative procedures.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic governance processes exist for key platforms but coverage may be incomplete or procedures unclear.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Platform governance is defined but implementation may be inconsistent or administrative procedures not consistently followed.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Tooling and platforms have clear governance and lifecycle processes with well-defined administrative roles.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Comprehensive platform governance with automated compliance, lifecycle management, and strategic alignment with business objectives.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-header">Question 35 of 35: Observability & Engineering Practices</div>
+        <div class="question-text">Engineering and platform practices include observability, telemetry, and consistent monitoring.</div>
+        <div class="answer-options">
+            <div class="answer-option not-in-place">
+                <div class="option-title">◯ Not in place</div>
+                <div class="option-description">Limited observability exists; engineering practices focus primarily on functional requirements without systematic monitoring.</div>
+            </div>
+            <div class="answer-option ad-hoc">
+                <div class="option-title">◯ Ad hoc</div>
+                <div class="option-description">Some basic monitoring exists but observability practices are inconsistent or not integrated into development workflows.</div>
+            </div>
+            <div class="answer-option partially-implemented">
+                <div class="option-title">◯ Partially implemented</div>
+                <div class="option-description">Basic observability practices exist but coverage may be incomplete or engineering practices not fully integrated.</div>
+            </div>
+            <div class="answer-option defined-inconsistent">
+                <div class="option-title">◯ Defined but inconsistently applied</div>
+                <div class="option-description">Observability standards are defined but implementation is inconsistent across engineering teams or platforms.</div>
+            </div>
+            <div class="answer-option consistently-applied">
+                <div class="option-title">◯ Consistently applied</div>
+                <div class="option-description">Observability and engineering practices provide strong telemetry and monitoring consistently across systems and platforms.</div>
+            </div>
+            <div class="answer-option mature-optimised">
+                <div class="option-title">◯ Mature / Optimised</div>
+                <div class="option-description">Advanced observability with distributed tracing, automated insights, and observability-driven development practices integrated throughout the engineering lifecycle.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Assessment Complete</strong> - 35 questions across 5 capability pillars</p>
+        <p>Generated by Integralis IT & Cyber Capability Assessment Tool</p>
+        <p>© 2025 Integralis - All rights reserved</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+{
+  "ITSM": {
+    "id": "ITSM",
+    "name": "ITSM & Service Management Maturity",
+    "question_ids": [1, 2, 3, 4, 5, 6, 7],
+    "narratives": {
+      "Foundational": "ITSM processes are inconsistent or informal. Core practices such as incident, change, and service catalog management require structured definition and adoption.",
+      "Developing": "ITSM processes exist but lack consistency or maturity. Improvements are needed in documentation, governance, and service quality measurement.",
+      "Established": "ITSM practices are mature and well-governed. Opportunities remain in automation, optimisation, and proactive service management.",
+      "Advanced": "ITSM is highly mature with strong governance, automation, and continuous improvement embedded across the service lifecycle."
+    },
+    "level_action_templates": {
+      "Foundational": [
+        "Document core ITSM processes for incident, request, change, and escalation.",
+        "Create a foundational service catalog and publish it for users.",
+        "Introduce basic SLAs and begin tracking performance."
+      ],
+      "Developing": [
+        "Strengthen governance around change and escalation processes.",
+        "Expand your knowledge base with up-to-date, searchable documentation.",
+        "Improve SLA tracking and introduce regular service performance reviews."
+      ],
+      "Established": [
+        "Automate routine workflows in ITSM tooling (assignments, approvals, categorisation).",
+        "Enhance the self-service portal to reduce manual workload.",
+        "Expand CSI practices into monthly operational rhythms."
+      ],
+      "Advanced": [
+        "Leverage predictive analytics for incident trends and service optimisation.",
+        "Automate service onboarding, lifecycle tasks, and knowledge creation.",
+        "Integrate ITSM data into cross-functional business dashboards for executive reporting."
+      ]
+    }
+  },
+  "CYBER": {
+    "id": "CYBER",
+    "name": "Cyber Readiness (Essential 8 / ISO / SMB1001)",
+    "question_ids": [8, 9, 10, 11, 12, 13, 14],
+    "narratives": {
+      "Foundational": "Cyber controls are inconsistent or missing across identity, devices, access, and recovery. The environment is highly vulnerable to common attacks, and several Essential 8 baseline requirements are not met.",
+      "Developing": "Some cyber controls exist, but enforcement is uneven or incomplete. Key areas such as MFA, patching, logging, or backup testing require improvement to meet Essential 8 and SMB1001 expectations.",
+      "Established": "Core cyber controls are generally strong, with good coverage across identity, endpoints, access, and recovery. Remaining work focuses on consistency, automation, and deeper alignment with SMB1001 and ISO.",
+      "Advanced": "Cyber maturity is high, with strong alignment to Essential 8, ISO 27001, and SMB1001. The environment demonstrates proactive monitoring, continuous improvement, and strong operational cyber practices."
+    },
+    "level_action_templates": {
+      "Foundational": [
+        "Implement MFA for all staff and administrators and enforce it consistently.",
+        "Deploy endpoint protection across all devices, including laptops, servers, and workstations.",
+        "Establish reliable, secure backups and test recovery regularly.",
+        "Introduce structured patching and vulnerability remediation cycles."
+      ],
+      "Developing": [
+        "Fully enforce MFA for all privileged accounts.",
+        "Expand endpoint protection enforcement to any uncovered devices.",
+        "Increase the frequency and reliability of backup testing.",
+        "Formalise patching cycles to reduce inconsistent remediation."
+      ],
+      "Established": [
+        "Align cyber controls with SMB1001 and Essential 8 Level 2 requirements.",
+        "Develop formal evidence collections for audits and client assurance.",
+        "Expand monitoring and logging to full coverage for all critical systems.",
+        "Automate alerting thresholds and response workflows."
+      ],
+      "Advanced": [
+        "Introduce continuous threat hunting and advanced analytics.",
+        "Embed cyber maturity reviews into quarterly operational cadence.",
+        "Optimise automation for identity lifecycle, endpoint compliance, and log analysis.",
+        "Expand audit-readiness to include ISO 27001 certification traceability."
+      ]
+    }
+  },
+  "PROCESS": {
+    "id": "PROCESS",
+    "name": "Business Process & Automation",
+    "question_ids": [15, 16, 17, 18, 19, 20, 21],
+    "narratives": {
+      "Foundational": "Business processes are informal or inconsistent, with limited documentation and minimal automation.",
+      "Developing": "Processes show structure but lack maturity, with inconsistent automation or unclear integration.",
+      "Established": "Processes are well-documented and increasingly automated, with reliable workflow consistency.",
+      "Advanced": "Business processes are optimisation-focused with strong automation, metrics, and cross-team clarity."
+    },
+    "level_action_templates": {
+      "Foundational": [
+        "Document core business processes and standard operating procedures.",
+        "Identify manual processes with the highest time impact.",
+        "Introduce foundational workflow tools for simple automation."
+      ],
+      "Developing": [
+        "Expand automation to multi-step workflows and common approvals.",
+        "Improve data flow between systems by aligning integration points.",
+        "Update training materials to reflect new processes."
+      ],
+      "Established": [
+        "Introduce advanced workflow automation across departments.",
+        "Implement monitoring dashboards to track process performance.",
+        "Standardise integration patterns across business applications."
+      ],
+      "Advanced": [
+        "Apply predictive analytics to identify process optimisation opportunities.",
+        "Align business processes to measurable strategic outcomes.",
+        "Introduce adaptive workflows and continuous improvement cycles."
+      ]
+    }
+  },
+  "OPSEX": {
+    "id": "OPSEX",
+    "name": "Operational Excellence & Intelligent Automation",
+    "question_ids": [22, 23, 24, 25, 26, 27, 28],
+    "narratives": {
+      "Foundational": "Operational practices are mostly reactive with limited monitoring, automation, or governance.",
+      "Developing": "Some operational structure is emerging, but automation and consistency need improvement.",
+      "Established": "Operational practices are consistent, automated, and regularly reviewed.",
+      "Advanced": "Operational excellence is proactive and data-driven with automation and intelligent tooling embedded across workflows."
+    },
+    "level_action_templates": {
+      "Foundational": [
+        "Establish core monitoring and alerting for critical systems.",
+        "Document basic operating procedures for routine tasks.",
+        "Identify high-frequency manual tasks suitable for automation."
+      ],
+      "Developing": [
+        "Expand monitoring coverage and establish performance baselines.",
+        "Automate multi-step operational tasks such as provisioning and checks.",
+        "Introduce intelligent rules or lightweight AI features to reduce manual workload."
+      ],
+      "Established": [
+        "Implement event correlation and automated RCA insights.",
+        "Optimise automation coverage and remove remaining manual steps.",
+        "Enhance governance cadence with measurable outcomes."
+      ],
+      "Advanced": [
+        "Introduce predictive analytics for outage prevention.",
+        "Implement fully automated remediation scripts for common issues.",
+        "Align operational excellence KPIs with strategic business outcomes."
+      ]
+    }
+  },
+  "TECH": {
+    "id": "TECH",
+    "name": "Technical Capability Foundations",
+    "question_ids": [29, 30, 31, 32, 33, 34, 35],
+    "narratives": {
+      "Foundational": "Technical foundations such as identity, device management, networks, and DR require significant uplift.",
+      "Developing": "Some technical foundations are in place but need consistency, standardisation, and improved governance.",
+      "Established": "Technical foundations are strong with sound identity, device, network, and platform governance.",
+      "Advanced": "Technical capabilities are robust, automated, and aligned with leading engineering and platform practices."
+    },
+    "level_action_templates": {
+      "Foundational": [
+        "Introduce strong identity lifecycle management with enforced access controls.",
+        "Deploy central device management and enforce security baselines.",
+        "Document network segmentation strategy and begin implementing modern controls."
+      ],
+      "Developing": [
+        "Strengthen cloud readiness planning across applications and infrastructure.",
+        "Improve platform governance, including admin roles and lifecycle procedures.",
+        "Enhance backup and DR testing to meet RTO/RPO targets."
+      ],
+      "Established": [
+        "Expand observability and telemetry across all core systems.",
+        "Optimise network segmentation and strengthen micro-segmentation.",
+        "Formalise governance processes for cross-platform lifecycle activities."
+      ],
+      "Advanced": [
+        "Introduce engineering automation for platform updates and compliance checks.",
+        "Deploy advanced telemetry and predictive performance analytics.",
+        "Integrate technical metrics into business reporting dashboards."
+      ]
+    }
+  }
+}

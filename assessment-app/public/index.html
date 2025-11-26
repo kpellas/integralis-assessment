@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT & Cyber Capability Assessment | Integralis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing-page" class="container">
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="Integralis" class="logo">
+            </div>
+            <h1>IT & Cyber Capability Assessment</h1>
+            <p class="tagline">A structured review of your organisation's technology maturity — in&nbsp;about&nbsp;10-15&nbsp;minutes.</p>
+        </header>
+
+        <section class="intro">
+            <p>The assessment evaluates your organisation across four strategic capability pillars essential for operational resilience, regulatory compliance, and secure service delivery:</p>
+            <ul>
+                <li>Core IT Operations & Reliability</li>
+                <li>Strategic Service Management (ITSM + ESM)</li>
+                <li>Information Security & Governance</li>
+                <li>Risk, Compliance, & Assurance</li>
+            </ul>
+            <p>You will receive a personalised summary of strengths, key gaps, and targeted recommendations to guide your next steps.</p>
+        </section>
+        
+        <div class="target-audience">
+            <p>Designed for CIOs, IT Managers, Security Leaders, and Operations teams.</p>
+        </div>
+
+        <button id="start-btn" class="primary-btn">Start Assessment</button>
+    </div>
+
+    <!-- Assessment Page -->
+    <div id="assessment-page" class="container" style="display: none;">
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <p class="progress-text">Question <span id="current-question">1</span> of <span id="total-questions">35</span></p>
+
+        <div id="question-container">
+            <!-- Questions dynamically inserted here -->
+        </div>
+
+        <div class="navigation">
+            <button id="prev-btn" class="secondary-btn" disabled>Previous</button>
+            <button id="next-btn" class="primary-btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Summary Results Page (shown immediately after assessment) -->
+    <div id="summary-page" class="container" style="display: none;">
+        <header>
+            <h2>Your Assessment Results</h2>
+            <p>Here's a summary of your IT & Cyber capability maturity</p>
+        </header>
+
+        <div id="summary-results" class="results-summary">
+            <!-- Basic summary dynamically inserted here -->
+        </div>
+
+        <div class="next-steps">
+            <h3>Want More Detail?</h3>
+            <p>Get a comprehensive report with:</p>
+            <ul>
+                <li>Detailed analysis of each capability pillar</li>
+                <li>Specific strengths and improvement areas</li>
+                <li>Framework recommendations (Essential 8, SMB1001, ISO 27001)</li>
+                <li>Prioritised action plan</li>
+            </ul>
+            
+            <div class="action-buttons">
+                <button id="email-report-btn" class="primary-btn">Email My Report</button>
+                <button id="book-review-btn" class="secondary-btn">Book a Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Page -->
+    <div id="contact-page" class="container" style="display: none;">
+        <header>
+            <h2>Get Your Detailed Report</h2>
+            <p>Enter your details to receive your comprehensive assessment report via email.</p>
+        </header>
+
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="contact-name">Your Name *</label>
+                <input type="text" id="contact-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact-email">Work Email *</label>
+                <input type="email" id="contact-email" required pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$">
+                <small>Please use your corporate email address</small>
+            </div>
+
+            <div class="form-group">
+                <label for="organisation-name">Organisation Name *</label>
+                <input type="text" id="organisation-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact-phone">Phone Number (optional)</label>
+                <input type="tel" id="contact-phone" inputmode="tel">
+            </div>
+
+            <div class="form-group">
+                <label for="org-size">Organisation Size (optional)</label>
+                <select id="org-size">
+                    <option value="">Prefer not to say</option>
+                    <option value="1–10">1–10</option>
+                    <option value="11–50">11–50</option>
+                    <option value="51–200">51–200</option>
+                    <option value="201–500">201–500</option>
+                    <option value="501–1,000">501–1,000</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="industry">Industry (optional)</label>
+                <select id="industry">
+                    <option value="">Select industry</option>
+                    <option value="Technology">Technology</option>
+                    <option value="NDIS / Disability Services">NDIS / Disability Services</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Professional Services">Professional Services</option>
+                    <option value="Education">Education</option>
+                    <option value="Government">Government</option>
+                    <option value="Not-for-Profit">Not-for-Profit</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="industry-other-group" style="display: none;">
+                <label for="industry-other">Other industry</label>
+                <textarea id="industry-other" rows="2" placeholder="Tell us more"></textarea>
+            </div>
+
+            <button type="submit" class="primary-btn">Email My Report</button>
+            <button type="button" id="back-to-summary" class="secondary-btn">Back to Summary</button>
+        </form>
+    </div>
+
+    <!-- Email Confirmation Page -->
+    <div id="confirmation-page" class="container" style="display: none;">
+        <header>
+            <h2>Report Sent!</h2>
+            <p>Your detailed report has been emailed to you.</p>
+        </header>
+
+        <div class="success-message">
+            <p><strong>Check your inbox</strong> - your comprehensive assessment report with personalised recommendations should arrive within the next few minutes.</p>
+            <p>If you don't see it, please check your spam folder.</p>
+        </div>
+
+        <div class="action-buttons">
+            <button id="book-review-confirm-btn" class="primary-btn">Book a Review Session</button>
+            <button id="back-to-summary-confirm" class="secondary-btn">Back to Summary</button>
+        </div>
+    </div>
+
+    <!-- Callback Request Form -->
+    <div id="callback-page" class="container" style="display: none;">
+        <header>
+            <h2>Request a Review Session</h2>
+            <p>We'll contact you to discuss your results and next steps.</p>
+        </header>
+
+        <form id="callback-form">
+            <div class="form-group">
+                <label for="callback-name">Your Name *</label>
+                <input type="text" id="callback-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="callback-email">Work Email *</label>
+                <input type="email" id="callback-email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="callback-organisation">Organisation Name *</label>
+                <input type="text" id="callback-organisation" required>
+            </div>
+
+            <div class="form-group">
+                <label for="callback-phone">Phone Number *</label>
+                <input type="tel" id="callback-phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="callback-preferred-time">Preferred Contact Time</label>
+                <select id="callback-preferred-time">
+                    <option value="Morning (9am-12pm)">Morning (9am-12pm)</option>
+                    <option value="Afternoon (1pm-5pm)">Afternoon (1pm-5pm)</option>
+                    <option value="Anytime">Anytime</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="callback-notes">Additional Notes (optional)</label>
+                <textarea id="callback-notes" rows="3" placeholder="Anything specific you'd like to discuss?"></textarea>
+            </div>
+
+            <button type="submit" class="primary-btn">Request Callback</button>
+            <button type="button" id="back-to-summary-callback" class="secondary-btn">Back to Summary</button>
+        </form>
+    </div>
+
+    <!-- Callback Confirmation Page -->
+    <div id="callback-confirmation-page" class="container" style="display: none;">
+        <header>
+            <h2>Callback Requested!</h2>
+            <p>We'll be in touch within 1 business day.</p>
+        </header>
+
+        <div class="success-message">
+            <p><strong>Thank you for your interest.</strong> A member of our team will contact you to discuss your assessment results and recommendations.</p>
+            <p>In the meantime, you can still request your detailed report if you haven't already.</p>
+        </div>
+
+        <div class="action-buttons">
+            <button id="email-report-from-callback" class="primary-btn">Email My Report</button>
+            <button id="back-to-summary-callback-confirm" class="secondary-btn">Back to Summary</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Generating your report...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

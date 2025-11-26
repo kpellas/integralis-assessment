@@ -1,5 +1,18 @@
 // Assessment Application Logic
 
+// Generate unique session ID
+function generateSessionId() {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    
+    // Get or initialize daily counter
+    const counterKey = `submission-counter-${today}`;
+    let counter = parseInt(localStorage.getItem(counterKey) || '0');
+    counter++;
+    localStorage.setItem(counterKey, counter.toString());
+    
+    return `sub-${today}-${counter}`;
+}
+
 // State management
 const state = {
     currentQuestion: 0,
@@ -8,7 +21,14 @@ const state = {
     pillars: {},
     levelDescriptors: {},
     scores: null,
-    contactInfo: {}
+    contactInfo: {},
+    tracking: {
+        sessionId: generateSessionId(),
+        referrer: document.referrer || 'Direct',
+        landingTime: new Date().toISOString(),
+        urlParams: Object.fromEntries(new URLSearchParams(window.location.search)),
+        userAgent: navigator.userAgent
+    }
 };
 
 // localStorage persistence functions
@@ -296,14 +316,67 @@ function setupEventListeners() {
 
     // Book Review button
     document.getElementById('book-review-btn').addEventListener('click', () => {
-        window.open('https://calendly.com/integralis/assessment-review', '_blank');
+        showPage('callback-page');
     });
 
     // Book Review from confirmation page
     const bookReviewConfirmBtn = document.getElementById('book-review-confirm-btn');
     if (bookReviewConfirmBtn) {
         bookReviewConfirmBtn.addEventListener('click', () => {
-            window.open('https://calendly.com/integralis/assessment-review', '_blank');
+            showPage('callback-page');
+        });
+    }
+
+    // Callback form submission
+    document.getElementById('callback-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('callback-name').value.trim();
+        const email = document.getElementById('callback-email').value.trim();
+        const organisation = document.getElementById('callback-organisation').value.trim();
+        const phone = document.getElementById('callback-phone').value.trim();
+        const preferredTime = document.getElementById('callback-preferred-time').value;
+        const notes = document.getElementById('callback-notes').value.trim();
+
+        if (!name || !email || !organisation || !phone) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        try {
+            await submitCallbackRequest({
+                name, email, organisation, phone, preferredTime, notes,
+                sessionId: state.tracking.sessionId,
+                scores: state.scores,
+                answers: state.answers
+            });
+            showPage('callback-confirmation-page');
+        } catch (error) {
+            console.error('Error submitting callback request:', error);
+            alert('There was an error submitting your request. Please try again.');
+        }
+    });
+
+    // Back buttons for callback form
+    document.getElementById('back-to-summary-callback').addEventListener('click', () => {
+        showPage('summary-page');
+    });
+
+    document.getElementById('back-to-summary-callback-confirm').addEventListener('click', () => {
+        showPage('summary-page');
+    });
+
+    // Email report from callback confirmation
+    document.getElementById('email-report-from-callback').addEventListener('click', () => {
+        showPage('contact-page');
+    });
+
+    // Optional industry "Other" toggle
+    const industrySelect = document.getElementById('industry');
+    const industryOtherGroup = document.getElementById('industry-other-group');
+    if (industrySelect && industryOtherGroup) {
+        industrySelect.addEventListener('change', () => {
+            industryOtherGroup.style.display = industrySelect.value === 'Other' ? 'block' : 'none';
         });
     }
 
@@ -326,6 +399,10 @@ function setupEventListeners() {
         const name = document.getElementById('contact-name').value.trim();
         const email = document.getElementById('contact-email').value.trim();
         const organisation = document.getElementById('organisation-name').value.trim();
+        const phone = (document.getElementById('contact-phone')?.value || '').trim();
+        const orgSize = document.getElementById('org-size')?.value || '';
+        const industry = document.getElementById('industry')?.value || '';
+        const industryOther = (document.getElementById('industry-other')?.value || '').trim();
 
         // Validate corporate email (basic check for domain)
         const emailDomain = email.split('@')[1];
@@ -335,8 +412,9 @@ function setupEventListeners() {
             return;
         }
 
-        // Store contact info
-        state.contactInfo = { name, email, organisation };
+        // Store contact info (optional fields included)
+        state.contactInfo = { name, email, organisation, phone, orgSize, industry, industryOther };
+        saveProgress();
 
         // Submit assessment for detailed report
         await submitAssessment();
@@ -393,8 +471,36 @@ function determineLevel(score) {
     return 'Optimised';
 }
 
+// Capture assessment results automatically for BCC
+async function captureAssessmentResults() {
+    try {
+        const response = await fetch('/.netlify/functions/captureAssessment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                answers: state.answers,
+                tracking: {
+                    ...state.tracking,
+                    completionTime: new Date().toISOString()
+                }
+            })
+        });
+        
+        if (!response.ok) {
+            console.log('Assessment capture failed (non-blocking):', response.status);
+        }
+    } catch (error) {
+        console.log('Assessment capture error (non-blocking):', error);
+    }
+}
+
 // Show summary page with basic results
 function showSummary() {
+    // Automatically capture results for BCC (non-blocking)
+    captureAssessmentResults();
+    
     const summaryDiv = document.getElementById('summary-results');
     
     summaryDiv.innerHTML = `
@@ -472,7 +578,7 @@ function getInsightText(score) {
 
 // Show specific page
 function showPage(pageId) {
-    const pages = ['landing-page', 'assessment-page', 'summary-page', 'contact-page', 'confirmation-page'];
+    const pages = ['landing-page', 'assessment-page', 'summary-page', 'contact-page', 'confirmation-page', 'callback-page', 'callback-confirmation-page'];
     pages.forEach(page => {
         const element = document.getElementById(page);
         if (element) {
@@ -521,7 +627,15 @@ async function submitAssessment() {
             organisation: state.contactInfo.organisation,
             contactName: state.contactInfo.name,
             contactEmail: state.contactInfo.email,
+            contactPhone: state.contactInfo.phone || '',
+            orgSize: state.contactInfo.orgSize || '',
+            industry: state.contactInfo.industry || '',
+            industryOther: state.contactInfo.industryOther || '',
             answers: state.answers,
+            tracking: {
+                ...state.tracking,
+                completionTime: new Date().toISOString()
+            },
             submittedAt: new Date().toISOString()
         };
 
@@ -559,9 +673,39 @@ async function submitAssessment() {
         if (error.message) {
             errorMessage += ` Details: ${error.message}`;
         }
-        errorMessage += '\n\nPlease contact assessments@integralis.com.au for assistance.';
+        errorMessage += '\n\nPlease contact assessment@integralis.com.au for assistance.';
         
         alert(errorMessage);
         showPage('summary-page');
+    }
+}
+
+// Submit callback request
+async function submitCallbackRequest(data) {
+    try {
+        const response = await fetch('/.netlify/functions/submitCallback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...data,
+                tracking: {
+                    ...state.tracking,
+                    requestTime: new Date().toISOString()
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Callback request submitted successfully:', result);
+        
+    } catch (error) {
+        console.error('Error submitting callback request:', error);
+        throw error;
     }
 }

@@ -1,0 +1,30 @@
+{
+  "CORE_IT_OPERATIONS": {
+    "Foundational": "Core systems lack consistency and reliability, leading to outages and unpredictable service quality. Improving operational discipline will reduce disruption risk and free staff from constant reactive work.",
+    "Developing": "Systems are generally stable but operational practices vary widely between teams. Increasing standardisation will reduce manual effort, lower incident rates, and improve service efficiency.",
+    "Established": "Operational processes are reliable but still depend on manual checks and inconsistent monitoring. Expanding automation will reduce operational risk and improve long-term cost control.",
+    "Advanced": "Operations are stable and mostly automated, but visibility gaps still create reactive work. Enhancing observability will reduce downtime, improve performance, and support scalable growth.",
+    "Optimised": "Operations are fully standardised and automated with strong visibility across systems. This enables predictable delivery, lower operational cost, and rapid recovery from issues."
+  },
+  "ITSM": {
+    "Foundational": "Service processes are informal or inconsistently followed, leading to delays and user frustration. Formalising workflows will reduce friction, improve service quality, and prevent avoidable escalations.",
+    "Developing": "Core ITSM processes exist but adoption varies across teams. Strengthening consistency will reduce rework, improve user satisfaction, and lower operational overhead.",
+    "Established": "Service management is functional but still relies on manual steps and limited automation. Expanding automation and ESM practices will reduce handling time and increase overall efficiency.",
+    "Advanced": "Service delivery is well-defined and increasingly automated, but cross-team alignment is not yet seamless. Unifying workflows will reduce bottlenecks and accelerate business outcomes.",
+    "Optimised": "Service operations are fully automated and experience-driven with strong analytics. This improves user productivity, reduces operating cost, and enables continuous service improvement."
+  },
+  "SECURITY": {
+    "Foundational": "Security controls are incomplete or inconsistently enforced, exposing the organisation to high risk. Improving baseline protection will reduce likelihood of compromise and lower incident impact.",
+    "Developing": "Core security controls exist but coverage gaps and manual processes persist. Increasing consistency and integration will reduce reactive work and strengthen overall security posture.",
+    "Established": "Security is well-managed but relies on manual monitoring and slow response cycles. Introducing automation will reduce detection time, shrink risk exposure, and improve operational resilience.",
+    "Advanced": "Security operations are mature but still require manual effort for correlation and response. Enhancing automation and intelligence will reduce response cost and prevent high-impact incidents.",
+    "Optimised": "Security is fully integrated, automated, and intelligence-led. This minimises risk exposure, reduces operational burden, and enables rapid, predictable response to emerging threats."
+  },
+  "GOVERNANCE": {
+    "Foundational": "Governance and compliance processes are informal or incomplete, creating blind spots in risk and accountability. Establishing structured governance will reduce compliance exposure and improve transparency.",
+    "Developing": "Governance frameworks exist but are inconsistently maintained or manually executed. Improving alignment and automation will reduce audit effort and ensure reliable risk management.",
+    "Established": "Governance is structured but relies on periodic reviews and manual evidence gathering. Increasing automation will lower audit cost, strengthen assurance, and reduce business disruption.",
+    "Advanced": "Governance is strong but not fully continuous, creating reporting delays and inefficiencies. Moving to continuous compliance will reduce risk, accelerate decision-making, and support strategic planning.",
+    "Optimised": "Governance is fully automated with real-time assurance and aligned strategic planning. This minimises compliance cost, strengthens risk oversight, and improves organisational resilience."
+  }
+}

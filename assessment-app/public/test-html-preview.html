@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Preview Test</title>
+    <script>
+        async function generateHTMLPreview() {
+            const testData = {
+                organisation: "Preview Test Company",
+                contactName: "Test User",
+                contactEmail: "test@company.com",
+                downloadOnly: true,
+                answers: {}
+            };
+            
+            // Generate varied test scores
+            for (let i = 1; i <= 35; i++) {
+                if (i <= 7) testData.answers[`q${i}`] = 20 + (i * 3); // Low scores
+                else if (i <= 14) testData.answers[`q${i}`] = 30 + (i * 2); // Low-medium
+                else if (i <= 21) testData.answers[`q${i}`] = 50 + i; // Medium
+                else if (i <= 28) testData.answers[`q${i}`] = 70 + (i % 10); // High-medium
+                else testData.answers[`q${i}`] = 85 + (i % 5); // High scores
+            }
+            
+            try {
+                // Instead of getting PDF, we'll extract the HTML
+                const response = await fetch('/.netlify/functions/generateReport', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+                
+                // The function will return a download URL or PDF
+                // We can't directly get the HTML, so let's show what we sent
+                document.getElementById('preview').innerHTML = `
+                    <h3>Test Data Sent:</h3>
+                    <pre>${JSON.stringify(testData, null, 2)}</pre>
+                    <p>PDF Generation triggered. Check test-assessment-*.pdf files</p>
+                    <p>The HTML is being converted to PDF by Puppeteer.</p>
+                    <p>Issues could be:</p>
+                    <ul>
+                        <li>Page breaks not working properly</li>
+                        <li>Absolute positioning failing in PDF</li>
+                        <li>CSS grid/flexbox not rendering correctly</li>
+                        <li>Font sizes or margins too large</li>
+                    </ul>
+                `;
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>HTML Preview Test</h1>
+    <button onclick="generateHTMLPreview()">Generate HTML Preview</button>
+    <div id="preview"></div>
+</body>
+</html>
