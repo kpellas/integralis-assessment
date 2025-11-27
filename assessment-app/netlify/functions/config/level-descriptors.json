@@ -1,0 +1,387 @@
+{
+  "1": {
+    "question": "How consistently are your devices managed with configurations and security baselines?",
+    "levels": {
+      "0": "Not in place — Devices are unmanaged, unpatched, or configured inconsistently.",
+      "1": "Ad hoc — Some devices are enrolled or receive updates, but coverage is inconsistent and dependent on individuals.",
+      "2": "Partially implemented — A device management tool is in place, but baselines are incomplete or not enforced across all device types.",
+      "3": "Defined but inconsistently applied — Standards exist and most devices are onboarded, but gaps persist due to manual exceptions or inconsistent enforcement.",
+      "4": "Consistently applied — Devices follow standardised baselines with strong visibility and predictable compliance across the fleet.",
+      "5": "Mature / Optimised — Zero-touch provisioning, continuous compliance monitoring, and automated remediation ensure devices remain secure and reliable with minimal manual effort."
+    }
+  },
+  "2": {
+    "question": "How reliable and regularly tested are your backups for critical systems?",
+    "levels": {
+      "0": "Not in place — Backups are missing, unreliable, or unknown.",
+      "1": "Ad hoc — Some systems are backed up, but schedules are inconsistent and restores are rarely tested.",
+      "2": "Partially implemented — Critical workloads are backed up, but coverage gaps, failed jobs, or untested recovery weaken confidence.",
+      "3": "Defined but inconsistently applied — Backup policies exist but are not executed consistently across business systems.",
+      "4": "Consistently applied — Backups run reliably with standardised schedules and periodic restore testing.",
+      "5": "Mature / Optimised — Automated backup validation, immutable storage, and regular disaster recovery testing provide strong, predictable recovery capability."
+    }
+  },
+  "3": {
+    "question": "How effectively does monitoring and alerting identify issues proactively?",
+    "levels": {
+      "0": "Not in place — Limited or no monitoring exists; issues are discovered by users first.",
+      "1": "Ad hoc — Some dashboards or checks exist, but alerting is inconsistent or reactive.",
+      "2": "Partially implemented — Key systems are monitored, but gaps in coverage or alert quality reduce usefulness.",
+      "3": "Defined but inconsistently applied — Monitoring standards exist, but adoption varies or alerts lack clear actionability.",
+      "4": "Consistently applied — Strong monitoring coverage with actionable alerts supports effective incident response.",
+      "5": "Mature / Optimised — Proactive monitoring with predictive analytics and automated responses reduces outages and improves reliability."
+    }
+  },
+  "4": {
+    "question": "How reliably do core IT systems operate with minimal unplanned outages?",
+    "levels": {
+      "0": "Not in place — Core systems experience frequent or prolonged outages that impact business operations.",
+      "1": "Ad hoc — Some stability exists, but outages are common and recovery is often lengthy.",
+      "2": "Partially implemented — Most systems are stable, but some areas still experience regular unplanned downtime.",
+      "3": "Defined but inconsistently applied — Stability practices exist but are not consistently applied across all systems.",
+      "4": "Consistently applied — Core systems operate reliably with rare unplanned outages and quick recovery when issues occur.",
+      "5": "Mature / Optimised — Systems are engineered for high availability with automated failover and minimal business impact from incidents."
+    }
+  },
+  "5": {
+    "question": "How effectively are capacity and performance monitored to prevent service degradation?",
+    "levels": {
+      "0": "Not in place — Capacity and performance issues are addressed only after users complain or systems fail.",
+      "1": "Ad hoc — Some capacity checks occur, but planning and monitoring are reactive rather than proactive.",
+      "2": "Partially implemented — Basic capacity monitoring exists, but forecasting and proactive management are inconsistent.",
+      "3": "Defined but inconsistently applied — Capacity monitoring processes exist but are not consistently followed across all systems.",
+      "4": "Consistently applied — Capacity and performance are actively monitored with proactive planning to prevent bottlenecks.",
+      "5": "Mature / Optimised — Automated capacity management with predictive analytics prevents performance issues and optimises resource utilisation."
+    }
+  },
+  "6": {
+    "question": "How consistently are IT standards and system configurations applied?",
+    "levels": {
+      "0": "Not in place — No defined standards; systems are configured individually with no consistency.",
+      "1": "Ad hoc — Some standard configurations exist, but they are informal and not consistently documented or enforced.",
+      "2": "Partially implemented — Basic standards exist for key systems, but many devices or applications do not follow them.",
+      "3": "Defined but inconsistently applied — Standards are documented, but enforcement varies across teams, devices, or platforms.",
+      "4": "Consistently applied — IT standards and configurations are enforced through centralised tooling with good coverage.",
+      "5": "Mature / Optimised — Standards are automated, continuously monitored for drift, and aligned with industry best practices across all environments."
+    }
+  },
+  "7": {
+    "question": "How effectively are routine IT tasks automated to reduce manual effort?",
+    "levels": {
+      "0": "Not in place — All routine tasks are performed manually, consuming significant time and increasing error risk.",
+      "1": "Ad hoc — Some individual automations exist, but they lack standardisation and coverage is minimal.",
+      "2": "Partially implemented — Basic automations exist for certain processes, but many routine tasks remain manual.",
+      "3": "Defined but inconsistently applied — Automation standards and tools are defined, but teams vary widely in adoption and usage.",
+      "4": "Consistently applied — Routine IT tasks are systematically automated, reducing manual effort and improving reliability.",
+      "5": "Mature / Optimised — Comprehensive automation with intelligent workflows, exception handling, and continuous optimisation of operational processes."
+    }
+  },
+  "8": {
+    "question": "How effectively do systems integrate with clear data flows and minimal manual workarounds?",
+    "levels": {
+      "0": "Not in place — Systems are poorly integrated, requiring extensive manual data entry and workarounds.",
+      "1": "Ad hoc — Some basic integrations exist, but many processes require manual intervention and data duplication.",
+      "2": "Partially implemented — Key integrations are in place, but data flows are incomplete and some manual workarounds remain.",
+      "3": "Defined but inconsistently applied — Integration standards exist, but implementation varies across systems and teams.",
+      "4": "Consistently applied — Systems integrate effectively with reliable data flows and minimal manual intervention required.",
+      "5": "Mature / Optimised — Seamless system integration with automated data flows, real-time synchronisation, and comprehensive API management."
+    }
+  },
+  "9": {
+    "question": "How consistently are service desk processes followed for incident and request management?",
+    "levels": {
+      "0": "Not in place — No defined service desk process exists; issues are raised informally via email, chat, or verbally and may be lost or duplicated.",
+      "1": "Ad hoc — Some issues are captured in a system, but many are handled outside any formal process and there is no consistent way of working.",
+      "2": "Partially implemented — A service desk tool and basic process exist, but categories, triage rules, or workflows are incomplete or not used consistently across teams.",
+      "3": "Defined but inconsistently applied — The service desk process is documented and communicated, but different teams and individuals still bypass or interpret it differently.",
+      "4": "Consistently applied — The documented service desk process is followed across teams with clear triage, categorisation, and escalation, and exceptions are rare.",
+      "5": "Mature / Optimised — Service desk processes are consistently applied, measured, and regularly improved using data, feedback, and lessons learned."
+    }
+  },
+  "10": {
+    "question": "How effectively are incidents logged, triaged, and resolved using a defined framework?",
+    "levels": {
+      "0": "Not in place — Incidents are handled informally without logging, triage, or structured resolution processes.",
+      "1": "Ad hoc — Some incidents are logged, but triage and resolution processes are inconsistent and dependent on individuals.",
+      "2": "Partially implemented — Basic incident management exists, but workflows are incomplete and resolution times are unpredictable.",
+      "3": "Defined but inconsistently applied — Incident management processes are documented, but different teams may bypass or interpret procedures differently.",
+      "4": "Consistently applied — Incidents follow a reliable framework with consistent logging, triage, and escalation across all teams.",
+      "5": "Mature / Optimised — Incident management is mature with strong metrics, automated workflows, and continuous process improvements based on data analysis."
+    }
+  },
+  "11": {
+    "question": "How effectively is a clear service catalog and self-service portal used?",
+    "levels": {
+      "0": "Not in place — There is no formal service catalogue; users are unsure what IT provides or how to request it.",
+      "1": "Ad hoc — Some services or request types are described informally (e.g. wiki pages or emails), but there is no structured catalogue or consistent categories.",
+      "2": "Partially implemented — A basic service and request catalogue exists, but coverage is incomplete, naming is inconsistent, and users often choose the wrong options.",
+      "3": "Defined but inconsistently applied — Services and request categories are defined and available, but not all teams or channels use them consistently, and some services remain 'hidden'.",
+      "4": "Consistently applied — A clear, user-friendly service catalogue and request categories are published and used across channels, guiding users to the right request types.",
+      "5": "Mature / Optimised — The service catalogue is actively maintained, aligned to business language, and used to drive automation, routing, reporting, and continual improvement."
+    }
+  },
+  "12": {
+    "question": "How effectively do changes follow documented change management processes?",
+    "levels": {
+      "0": "Not in place — Changes are made directly in production with little or no review, approval, or communication, and risk is not formally assessed.",
+      "1": "Ad hoc — Some high-risk changes are discussed or approved informally, but there is no standard change process or change record.",
+      "2": "Partially implemented — A change process exists with basic logging and approvals, but many changes still bypass it or are incompletely documented.",
+      "3": "Defined but inconsistently applied — Change management procedures are documented but may be bypassed for urgent changes or interpreted differently across teams.",
+      "4": "Consistently applied — Changes consistently follow documented procedures with proper approvals and communication across all teams.",
+      "5": "Mature / Optimised — Change management is data-driven with mature processes, CAB reviews, success metrics, and automated workflows that drive continuous refinement."
+    }
+  },
+  "13": {
+    "question": "How effectively are knowledge articles documented, updated, and used for service delivery?",
+    "levels": {
+      "0": "Not in place — There is no central knowledge base; support relies on individual memory and undocumented 'tribal knowledge'.",
+      "1": "Ad hoc — Some notes or documents exist, often in personal drives or ad hoc locations, but they are incomplete, outdated, or hard to find.",
+      "2": "Partially implemented — A knowledge repository exists with useful content, but coverage is patchy and many key procedures are still undocumented or out of date.",
+      "3": "Defined but inconsistently applied — Standards for knowledge articles are defined, but not all teams contribute or maintain content, leading to mixed quality and trust.",
+      "4": "Consistently applied — Knowledge and support documentation is maintained in a central location, kept reasonably current, and used regularly by staff.",
+      "5": "Mature / Optimised — Knowledge management is embedded in daily work, with articles regularly reviewed, improved, and linked to tickets, and coverage measured and actively managed."
+    }
+  },
+  "14": {
+    "question": "How effectively have manual processes been identified and prioritised for automation?",
+    "levels": {
+      "0": "Not in place — Manual processes remain unidentified or unaddressed, limiting efficiency gains and increasing error risk.",
+      "1": "Ad hoc — Some manual processes are recognised, but there is no systematic approach to identifying or prioritising automation opportunities.",
+      "2": "Partially implemented — Basic process mapping exists, but automation prioritisation is ad hoc and implementation is inconsistent.",
+      "3": "Defined but inconsistently applied — Process identification and automation standards exist, but teams vary in how consistently they assess and implement improvements.",
+      "4": "Consistently applied — Manual processes are systematically identified, prioritised based on impact, and automation is implemented where appropriate.",
+      "5": "Mature / Optimised — Continuous process assessment drives strategic automation with measurable ROI, intelligent workflow design, and regular optimisation."
+    }
+  },
+  "15": {
+    "question": "How effectively are SLAs, KPIs, and service performance metrics tracked and reviewed?",
+    "levels": {
+      "0": "Not in place — Service performance is not measured; there are no defined SLAs, KPIs, or regular performance reports.",
+      "1": "Ad hoc — Some metrics or ad hoc reports exist, but they are produced irregularly and are not used in structured reviews or decisions.",
+      "2": "Partially implemented — Key SLAs or KPIs are defined and measured for some services, but data quality is variable and reporting is inconsistent.",
+      "3": "Defined but inconsistently applied — Standard performance dashboards or reports exist, but not all services are covered and regular review meetings only happen in some areas.",
+      "4": "Consistently applied — Service performance is measured using agreed SLAs and KPIs, reported regularly, and discussed in structured reviews with clear follow-up actions.",
+      "5": "Mature / Optimised — Performance metrics are trusted, reviewed at multiple levels, used to drive improvement initiatives, and aligned to business outcomes and customer experience."
+    }
+  },
+  "16": {
+    "question": "How effectively are continuous improvement practices embedded into service management?",
+    "levels": {
+      "0": "Not in place — There is no structured approach to service improvement; issues are fixed only when they become urgent.",
+      "1": "Ad hoc — Improvements are made reactively or driven by individuals, with no central list, prioritisation, or tracking.",
+      "2": "Partially implemented — Some recurring issues and improvement opportunities are captured, but follow-through is inconsistent and many actions stall.",
+      "3": "Defined but inconsistently applied — A continual improvement register or process exists, but its use varies by team and outcomes are not always tracked or reported.",
+      "4": "Consistently applied — Continual improvement is part of regular operations, with identified actions, owners, and timeframes, and progress is reviewed.",
+      "5": "Mature / Optimised — Continuous improvement is embedded culturally, supported by data and feedback, with clear prioritisation, benefits tracking, and visible outcomes."
+    }
+  },
+  "17": {
+    "question": "How effectively are cross-team workflows defined to minimise handoff delays?",
+    "levels": {
+      "0": "Not in place — Handoffs are informal or unclear; work is frequently delayed, duplicated, or lost between teams.",
+      "1": "Ad hoc — Some handoff steps exist, but they rely heavily on individuals and are often incomplete or inconsistent.",
+      "2": "Partially implemented — Basic handoff processes or tools exist, but roles, responsibilities, or timing remain unclear in many cases.",
+      "3": "Defined but inconsistently applied — Handoff expectations are documented, but teams vary in how reliably they follow them.",
+      "4": "Consistently applied — Cross-team handoffs are clear, predictable, and completed as part of standard workflows with minimal friction.",
+      "5": "Mature / Optimised — Handoffs are streamlined, measured, and continuously improved, with strong coordination and minimal rework across teams."
+    }
+  },
+  "18": {
+    "question": "How effectively is MFA enforced for all staff and administrator accounts?",
+    "levels": {
+      "0": "Not in place — MFA is largely absent; most users and admins authenticate with only a username and password.",
+      "1": "Ad hoc — MFA is enabled for some systems or user groups, but coverage is limited and there is no clear policy or standard.",
+      "2": "Partially implemented — MFA is enabled for many staff or key applications, but significant gaps remain, especially for privileged accounts or legacy systems.",
+      "3": "Defined but inconsistently applied — An MFA and identity security policy is defined, but enforcement is inconsistent across applications, user groups, or environments.",
+      "4": "Consistently applied — MFA and identity protections are applied in line with policy across staff and administrators for most critical systems, with few exceptions.",
+      "5": "Mature / Optimised — Identity security is robust, with comprehensive MFA coverage, conditional access, regular access reviews, and alignment with best-practice frameworks."
+    }
+  },
+  "19": {
+    "question": "How effectively is identity and access management centralised with strong lifecycle processes?",
+    "levels": {
+      "0": "Not in place — Identity controls are fragmented, manual, or inconsistent; joiner/mover/leaver processes are largely absent.",
+      "1": "Ad hoc — Some lifecycle steps occur (e.g., manual deprovisioning), but accuracy and timing vary significantly.",
+      "2": "Partially implemented — Basic IAM processes exist, but access reviews, provisioning accuracy, or timely deprovisioning are inconsistent.",
+      "3": "Defined but inconsistently applied — IAM policies and lifecycle steps are defined, but teams differ in how reliably they follow them.",
+      "4": "Consistently applied — Identity lifecycle is centralised with strong joiner/mover/leaver controls that are standardised, timely, and audited.",
+      "5": "Mature / Optimised — IAM is automated, secure, and well-governed, with regular access reviews and strict adherence to least-privilege principles."
+    }
+  },
+  "20": {
+    "question": "How effectively are admin rights restricted and monitored following least-privilege principles?",
+    "levels": {
+      "0": "Not in place — Admin rights are poorly controlled or excessive, increasing the risk of privilege-based attacks.",
+      "1": "Ad hoc — Some privileged accounts are restricted, but access is inconsistent and rarely reviewed.",
+      "2": "Partially implemented — Controls exist for privileged access, but coverage gaps, shared credentials, or outdated permissions remain.",
+      "3": "Defined but inconsistently applied — Policies for privileged access and reviews exist, but teams vary in how reliably they follow them.",
+      "4": "Consistently applied — Admin rights are tightly controlled with strong least-privilege enforcement and regular review processes.",
+      "5": "Mature / Optimised — Privileged access management includes just-in-time access, session auditing, and automated governance that minimises risk and improves traceability."
+    }
+  },
+  "21": {
+    "question": "How effectively is endpoint protection deployed across laptops, workstations, and servers?",
+    "levels": {
+      "0": "Not in place — Endpoint protection is missing or inconsistently deployed across devices, creating significant detection gaps.",
+      "1": "Ad hoc — Some devices have antivirus or protection tools installed, but coverage is incomplete and not centrally managed.",
+      "2": "Partially implemented — An endpoint protection or EDR tool is deployed to many devices, but coverage gaps, inconsistent policies, or limited monitoring remain.",
+      "3": "Defined but inconsistently applied — Standard endpoint protection policies exist and are deployed, but not all device types or locations are consistently covered or monitored.",
+      "4": "Consistently applied — All devices have endpoint protection deployed and actively reporting with standardised policies and monitoring.",
+      "5": "Mature / Optimised — EDR/XDR is fully embedded, with broad coverage, tuned alerts, threat hunting, and integration into wider security monitoring and incident response processes."
+    }
+  },
+  "22": {
+    "question": "How effectively do patching and vulnerability remediation occur on a regular schedule?",
+    "levels": {
+      "0": "Not in place — Patching and vulnerability remediation are irregular or reactive, increasing exposure to known threats.",
+      "1": "Ad hoc — Some critical patches are applied when issues arise or vendors prompt action, but there is no regular, planned patch cycle.",
+      "2": "Partially implemented — Basic patch schedules or tooling exist, but coverage is incomplete, exceptions are common, and vulnerability remediation is slow or inconsistent.",
+      "3": "Defined but inconsistently applied — A patch management process and vulnerability workflow exist, but adherence varies across systems, teams, or business units.",
+      "4": "Consistently applied — Patching and vulnerability remediation are consistently performed following a defined schedule with good coverage and documented exceptions.",
+      "5": "Mature / Optimised — Patch and vulnerability management are risk-based, well-governed, and measured, with rapid response to critical issues and continuous improvement of coverage and timeliness."
+    }
+  },
+  "23": {
+    "question": "How effectively are logging, alerting, and monitoring enabled for critical systems?",
+    "levels": {
+      "0": "Not in place — Logging, monitoring, and alerting are incomplete or inconsistent, creating blind spots in threat detection.",
+      "1": "Ad hoc — Some systems generate logs or alerts, but monitoring is inconsistent and largely reactive.",
+      "2": "Partially implemented — Key systems produce logs and alerts, but coverage is incomplete and many events go unreviewed.",
+      "3": "Defined but inconsistently applied — A monitoring process exists, but teams differ in how consistently they review and respond to alerts.",
+      "4": "Consistently applied — Logging and alerting are consistently enabled and monitored across critical systems with appropriate response procedures.",
+      "5": "Mature / Optimised — Monitoring is comprehensive, integrated with SIEM/XDR, and used proactively to detect threats and drive security improvements."
+    }
+  },
+  "24": {
+    "question": "How effectively are incident patterns and root causes identified through event correlation?",
+    "levels": {
+      "0": "Not in place — Root cause analysis is inconsistent or absent, causing repetitive incidents without resolution.",
+      "1": "Ad hoc — RCA occurs occasionally, usually when issues are severe or escalated, but not as routine practice.",
+      "2": "Partially implemented — Some teams perform RCA for recurring issues, but follow-through or documentation is inconsistent.",
+      "3": "Defined but inconsistently applied — An RCA process exists, but adoption varies and outcomes are not always reviewed or acted upon.",
+      "4": "Consistently applied — Event correlation and RCA processes effectively identify recurring issues with documented actions and clear ownership.",
+      "5": "Mature / Optimised — Event correlation is automated and proactive, with data-driven RCA that prevents issues and drives measurable improvements in reliability."
+    }
+  },
+  "25": {
+    "question": "How effectively are systems and applications monitored with actionable alerts?",
+    "levels": {
+      "0": "Not in place — Monitoring is limited or reactive, leading to delayed issue detection and user-reported problems.",
+      "1": "Ad hoc — Some systems generate alerts, but monitoring is inconsistent and largely reactive.",
+      "2": "Partially implemented — Monitoring covers key systems, but alert thresholds, ownership, or response workflows are inconsistent.",
+      "3": "Defined but inconsistently applied — Monitoring standards exist, but different teams vary in coverage, configuration, and responsiveness.",
+      "4": "Consistently applied — Monitoring and alerting provide strong visibility across systems with proactive issue detection and appropriate escalation.",
+      "5": "Mature / Optimised — Monitoring is comprehensive, proactively tuned, and integrated with processes for alert reduction, trend analysis, and reliability engineering."
+    }
+  },
+  "26": {
+    "question": "How effectively do intelligent tools support operational decision-making and reduce manual workload?",
+    "levels": {
+      "0": "Not in place — Intelligent automation opportunities remain unimplemented, leading to preventable manual work.",
+      "1": "Ad hoc — Some tools provide basic suggestions or alerts, but usage is inconsistent and not embedded in workflows.",
+      "2": "Partially implemented — Tools with limited intelligence exist, but adoption is patchy and insights are not consistently actioned.",
+      "3": "Defined but inconsistently applied — Intelligent tooling is available, but teams vary in how reliably they use it for operational decisions.",
+      "4": "Consistently applied — Intelligent or rules-based tools successfully support decision-making and reduce manual effort across teams.",
+      "5": "Mature / Optimised — AI-assisted tools are fully integrated, predictive, and used to proactively optimise operations and prevent issues."
+    }
+  },
+  "27": {
+    "question": "How effectively are security configuration baselines documented and consistently enforced?",
+    "levels": {
+      "0": "Not in place — Security configuration baselines are missing, inconsistent, or poorly enforced, creating security exposure and compliance risk.",
+      "1": "Ad hoc — Some baseline settings exist, but they are informal and not consistently documented or enforced.",
+      "2": "Partially implemented — Basic security baselines exist for key systems, but many devices or cloud services do not follow them.",
+      "3": "Defined but inconsistently applied — Baselines are documented, but enforcement varies across teams, devices, or platforms.",
+      "4": "Consistently applied — Security configuration baselines are well-defined, documented, and consistently enforced across all environments.",
+      "5": "Mature / Optimised — Security baselines are automated, continuously monitored for drift, aligned with CIS/industry standards, and enforced across all environments including cloud."
+    }
+  },
+  "28": {
+    "question": "How effectively do platforms and tooling have clear governance and lifecycle processes?",
+    "levels": {
+      "0": "Not in place — Platform governance is inconsistent or undefined, creating unmanaged risks.",
+      "1": "Ad hoc — Some tools follow lifecycle processes, but many are unmanaged or lack governance.",
+      "2": "Partially implemented — Governance and lifecycle processes exist, but coverage or compliance is inconsistent.",
+      "3": "Defined but inconsistently applied — Tooling governance is documented, but different teams follow it to varying degrees.",
+      "4": "Consistently applied — Tooling and platforms have clear governance and lifecycle processes that are reliably followed.",
+      "5": "Mature / Optimised — Tooling governance is strategic, data-driven, and ensures well-managed, cost-effective, secure platforms across the environment."
+    }
+  },
+  "29": {
+    "question": "How effectively do operational reviews and governance meetings occur with actionable outcomes?",
+    "levels": {
+      "0": "Not in place — Operational governance is irregular, reducing visibility and improvement traction.",
+      "1": "Ad hoc — Some meetings or decision processes occur, but they lack consistency or clear purpose.",
+      "2": "Partially implemented — Governance structures exist, but participation, agendas, or follow-up actions are inconsistent.",
+      "3": "Defined but inconsistently applied — Governance processes are documented, but teams vary in attendance, adherence, or execution.",
+      "4": "Consistently applied — Governance meetings drive consistent operational improvements with structured reviews and actionable outcomes.",
+      "5": "Mature / Optimised — Governance is strategic, data-driven, and supports proactive decision-making with clear accountability and continual refinement."
+    }
+  },
+  "30": {
+    "question": "How effectively does backup and disaster recovery architecture meet defined RTO/RPO requirements?",
+    "levels": {
+      "0": "Not in place — Backup or DR architecture cannot meet required recovery objectives.",
+      "1": "Ad hoc — Some DR components exist, but planning and testing are inconsistent or informal.",
+      "2": "Partially implemented — DR architecture exists for key systems, but gaps, outdated components, or untested failover paths remain.",
+      "3": "Defined but inconsistently applied — DR plans and architectures are documented, but testing or adherence varies across teams.",
+      "4": "Consistently applied — Backup and DR architecture reliably meets RTO/RPO requirements with regular testing and maintenance.",
+      "5": "Mature / Optimised — DR architecture is resilient, automated where possible, regularly tested, and improved based on lessons learned."
+    }
+  },
+  "31": {
+    "question": "How effectively are standard operating procedures defined and used consistently?",
+    "levels": {
+      "0": "Not in place — Operational procedures are inconsistent or outdated, creating variability in outcomes.",
+      "1": "Ad hoc — Some SOPs exist, but they are incomplete, outdated, or not widely used.",
+      "2": "Partially implemented — Core SOPs are documented, but coverage is limited and updates are inconsistent.",
+      "3": "Defined but inconsistently applied — SOPs are documented and accessible, but teams do not adopt them consistently, leading to variable outcomes.",
+      "4": "Consistently applied — Operations follow clearly documented standard procedures that are kept current and ensure consistent quality.",
+      "5": "Mature / Optimised — SOPs are well-maintained, version-controlled, aligned to best practices, and used to support continuous improvement and risk reduction."
+    }
+  },
+  "32": {
+    "question": "How effectively are core business processes documented and consistently followed?",
+    "levels": {
+      "0": "Not in place — Business processes are inconsistent or undocumented, creating operational variability.",
+      "1": "Ad hoc — Some processes are documented informally, but coverage and quality vary significantly.",
+      "2": "Partially implemented — Key processes are documented, but not comprehensively or consistently, and updates are irregular.",
+      "3": "Defined but inconsistently applied — Standard documentation templates and processes exist, but teams vary in maintenance and adoption.",
+      "4": "Consistently applied — Business processes are clearly documented and consistently followed across teams.",
+      "5": "Mature / Optimised — Processes are well-defined, versioned, measured, and continuously improved through regular review cycles."
+    }
+  },
+  "33": {
+    "question": "How effectively do operational processes have defined metrics and regular monitoring?",
+    "levels": {
+      "0": "Not in place — Process outcomes are not measured, limiting insight into performance and bottlenecks.",
+      "1": "Ad hoc — Some metrics are collected manually, but irregularly and without analysis.",
+      "2": "Partially implemented — Key metrics are tracked, but data quality, completeness, or usage is inconsistent.",
+      "3": "Defined but inconsistently applied — Dashboards, KPIs, or reports exist, but not all teams use them reliably to drive decisions.",
+      "4": "Consistently applied — Process metrics are well-defined, tracked, and used to optimise performance.",
+      "5": "Mature / Optimised — Metrics are robust, aligned to outcomes, used in planning, and drive structured improvement initiatives."
+    }
+  },
+  "34": {
+    "question": "How effectively do approvals use automated workflows rather than email-based processes?",
+    "levels": {
+      "0": "Not in place — Approvals are manual or email-driven, causing delays and inconsistent outcomes.",
+      "1": "Ad hoc — Some approvals are tracked, but there is no structured workflow or automation.",
+      "2": "Partially implemented — Basic automated approvals exist, but coverage is limited and inconsistent.",
+      "3": "Defined but inconsistently applied — Approval workflows are documented and available, but not all teams use them reliably.",
+      "4": "Consistently applied — Approval workflows are automated, consistent, and reduce manual delays.",
+      "5": "Mature / Optimised — Approval automation is integrated into end-to-end processes, monitored for efficiency, and optimised regularly."
+    }
+  },
+  "35": {
+    "question": "How effectively are process documentation and training materials current and accessible?",
+    "levels": {
+      "0": "Not in place — Documentation is outdated or inaccessible, creating inconsistent process execution.",
+      "1": "Ad hoc — Some training resources exist, but they vary in quality and are not centrally managed.",
+      "2": "Partially implemented — Training materials cover core topics, but gaps exist and updates are irregular.",
+      "3": "Defined but inconsistently applied — Training standards exist, but not all teams maintain or use materials consistently.",
+      "4": "Consistently applied — Training materials and process documentation are updated, accessible, and widely used.",
+      "5": "Mature / Optimised — Training is structured, regularly updated, aligned to roles, and incorporated into continuous learning frameworks."
+    }
+  }
+}

@@ -342,6 +342,10 @@ exports.handler = async (event) => {
 async function loadConfig(filename) {
     // Try multiple possible locations for config files
     const possiblePaths = [
+        // In Netlify functions, config is in same directory as function
+        path.join(__dirname, 'config', filename),
+        path.join(__dirname, '../config', filename),
+        // Local development paths
         path.join(process.cwd(), 'public/config', filename),
         path.join(process.cwd(), 'assessment-app/public/config', filename),
         path.join(__dirname, '../../public/config', filename),

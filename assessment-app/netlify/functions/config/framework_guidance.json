@@ -1,0 +1,107 @@
+{
+  "essential8": {
+    "low": {
+      "threshold": "< 30%",
+      "posture": "Foundational - Establish Level 1 Baseline",
+      "guidance": "Your cyber security maturity is foundational. Focus on establishing Essential 8 Maturity Level 1 controls across all eight mitigation strategies. Prioritise MFA, patching, and application control as immediate actions.",
+      "timeline": "Level 1 achievable within 6-9 months with focused effort.",
+      "next_steps": [
+        "Conduct Essential 8 gap assessment against Level 1 requirements",
+        "Prioritise MFA enforcement and patch management",
+        "Document current state and create uplift roadmap"
+      ]
+    },
+    "medium": {
+      "threshold": "30-60%",
+      "posture": "Developing - Strengthen Level 1 and Plan for Level 2",
+      "guidance": "Your cyber security controls show partial maturity. Strengthen existing Essential 8 Level 1 controls to ensure consistent enforcement, then begin planning your path to Level 2 maturity.",
+      "timeline": "Level 1 completion within 3-6 months, Level 2 within 12-18 months.",
+      "next_steps": [
+        "Complete Essential 8 Level 1 gaps and ensure consistent enforcement",
+        "Begin collecting evidence for compliance validation",
+        "Develop roadmap for Level 2 maturity uplift"
+      ]
+    },
+    "high": {
+      "threshold": "> 60%",
+      "posture": "Established - Progress to Level 2 and Formalise Evidence",
+      "guidance": "Your cyber security controls demonstrate strong maturity. Focus on progressing to Essential 8 Level 2 across all mitigation strategies and formalising evidence collection for compliance validation.",
+      "timeline": "Level 2 achievable within 6-12 months with structured effort.",
+      "next_steps": [
+        "Conduct formal Essential 8 Level 2 assessment",
+        "Implement automated evidence collection and reporting",
+        "Establish quarterly maturity review and continuous improvement process"
+      ]
+    }
+  },
+  "smb1001": {
+    "low": {
+      "threshold": "< 40%",
+      "posture": "Too Early for Formal Certification",
+      "guidance": "Current maturity across cyber, process, and operations is not yet sufficient for SMB1001 certification. Use SMB1001 as a practical roadmap to guide your security uplift, focusing on foundational controls first.",
+      "timeline": "Build foundations for 6-12 months before pursuing Bronze certification.",
+      "next_steps": [
+        "Use SMB1001 Bronze requirements as a practical improvement checklist",
+        "Focus on MFA, backups, patching, and incident response basics",
+        "Revisit certification once foundational controls are established"
+      ]
+    },
+    "medium": {
+      "threshold": "40-65%",
+      "posture": "Bronze Tier Feasible with Focused Uplift",
+      "guidance": "Your organisation demonstrates sufficient maturity to pursue SMB1001 Bronze certification with focused effort. Bronze provides a practical, achievable baseline that strengthens cyber resilience for small to medium organisations.",
+      "timeline": "Bronze certification achievable within 6-9 months.",
+      "next_steps": [
+        "Conduct SMB1001 Bronze gap assessment",
+        "Address priority gaps in cyber, process, and operational controls",
+        "Engage SMB1001 assessor once Bronze readiness is achieved"
+      ]
+    },
+    "high": {
+      "threshold": "> 65%",
+      "posture": "Silver/Gold Tier Achievable in 12-18 Months",
+      "guidance": "Your organisation shows strong maturity across cyber, process, and operations. Silver or Gold tier SMB1001 certification is achievable with structured uplift and evidence collection.",
+      "timeline": "Silver achievable within 12 months, Gold within 18 months.",
+      "next_steps": [
+        "Conduct SMB1001 Silver gap assessment",
+        "Strengthen evidence collection and documentation practices",
+        "Plan phased approach: Bronze → Silver → Gold over 12-18 months"
+      ]
+    }
+  },
+  "iso27001": {
+    "low": {
+      "threshold": "< 50%",
+      "posture": "Not Recommended Yet - Build Foundations First",
+      "guidance": "ISO 27001 certification requires mature practices across all capability areas. Your current overall maturity is not yet sufficient for a successful ISO 27001 journey. Focus on strengthening foundational controls first.",
+      "timeline": "Build maturity for 12-24 months before pursuing ISO 27001.",
+      "next_steps": [
+        "Strengthen cyber security, ITSM, and operational foundations",
+        "Use ISO 27001 Annex A controls as a long-term improvement roadmap",
+        "Revisit ISO 27001 certification once overall maturity reaches 50%+"
+      ]
+    },
+    "medium": {
+      "threshold": "50-70%",
+      "posture": "Begin Alignment - Certification is a Medium-Term Goal",
+      "guidance": "Your organisation demonstrates sufficient maturity to begin ISO 27001 alignment activities. Certification is achievable as a medium-term goal (12-18 months) with structured ISMS development and gap remediation.",
+      "timeline": "ISO 27001 certification achievable within 12-18 months.",
+      "next_steps": [
+        "Conduct ISO 27001 gap assessment against Annex A controls",
+        "Establish ISMS framework and document management system",
+        "Address priority gaps and build toward Stage 1 audit readiness"
+      ]
+    },
+    "high": {
+      "threshold": "> 70%",
+      "posture": "Certification Achievable Within 12-18 Months",
+      "guidance": "Your organisation demonstrates strong maturity across all capability areas. ISO 27001 certification is achievable within 12-18 months with structured ISMS implementation and formal gap remediation.",
+      "timeline": "ISO 27001 certification achievable within 12-18 months.",
+      "next_steps": [
+        "Engage ISO 27001 consultant or certification body for scoping",
+        "Conduct formal gap assessment and develop remediation roadmap",
+        "Establish ISMS documentation, policies, and evidence collection processes"
+      ]
+    }
+  }
+}

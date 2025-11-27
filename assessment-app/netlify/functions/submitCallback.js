@@ -115,8 +115,17 @@ exports.handler = async (event, context) => {
 // Load questions and format with answers
 async function formatQuestionsWithAnswers(answers) {
     try {
-        const questionsPath = path.join(process.cwd(), 'public', 'config', 'questions.json');
-        const descriptorsPath = path.join(process.cwd(), 'public', 'config', 'level-descriptors.json');
+        // Try function directory first (for Netlify), then public directory (for local)
+        let questionsPath = path.join(__dirname, 'config', 'questions.json');
+        let descriptorsPath = path.join(__dirname, 'config', 'level-descriptors.json');
+        
+        // Fallback to public directory if not found
+        if (!fs.existsSync(questionsPath)) {
+            questionsPath = path.join(process.cwd(), 'public', 'config', 'questions.json');
+        }
+        if (!fs.existsSync(descriptorsPath)) {
+            descriptorsPath = path.join(process.cwd(), 'public', 'config', 'level-descriptors.json');
+        }
         
         const questionsData = await fs.readFile(questionsPath, 'utf8');
         const descriptorsData = await fs.readFile(descriptorsPath, 'utf8');
