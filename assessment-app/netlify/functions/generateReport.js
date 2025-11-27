@@ -302,6 +302,7 @@ exports.handler = async (event) => {
     } catch (error) {
         console.error('Error processing assessment:', error);
         console.error('Error stack:', error.stack);
+        console.error('Error details:', error.response?.body || error.response || 'No response details');
         return {
             statusCode: 500,
             headers: {
@@ -312,8 +313,9 @@ exports.handler = async (event) => {
             },
             body: JSON.stringify({ 
                 error: 'Failed to process assessment',
-                details: error.message,
-                stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+                details: error.message || 'Unknown error',
+                // Include more details in production for debugging
+                debugInfo: error.response?.body?.errors || error.toString()
             })
         };
     }
@@ -2071,7 +2073,7 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
     const msg = {
         to: toEmail,
         from: {
-            email: process.env.FROM_EMAIL || 'assessments@integralis.com.au',
+            email: process.env.FROM_EMAIL || 'assessment@integralis.com.au',
             name: process.env.FROM_NAME || 'Integralis Assessment Team'
         },
         subject: `Your IT Capability Assessment Results - ${organisation}`,
