@@ -1,5 +1,6 @@
 const sgMail = require('@sendgrid/mail');
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
 
 exports.handler = async (event, context) => {
@@ -107,10 +108,10 @@ exports.handler = async (event, context) => {
 // Basic score calculation (simplified version)
 function calculateScores(answers) {
     const pillarQuestions = {
-        'pillar1': [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        'pillar2': [10, 11, 12, 13, 14, 15, 16, 17, 18],
-        'pillar3': [19, 20, 21, 22, 23, 24, 25, 26, 27],
-        'pillar4': [28, 29, 30, 31, 32, 33, 34, 35]
+        'pillar1': [1, 2, 3, 4, 5, 6, 7, 8],
+        'pillar2': [9, 10, 11, 12, 13, 14, 15, 16, 17],
+        'pillar3': [18, 19, 20, 21, 22, 23, 24, 25, 26],
+        'pillar4': [27, 28, 29, 30, 31, 32, 33, 34, 35]
     };
 
     const pillarNames = {
@@ -168,10 +169,10 @@ async function formatQuestionsWithAnswers(answers) {
         let descriptorsPath = path.join(__dirname, 'config', 'level-descriptors.json');
         
         // Fallback to public directory if not found
-        if (!fs.existsSync(questionsPath)) {
+        if (!fsSync.existsSync(questionsPath)) {
             questionsPath = path.join(process.cwd(), 'public', 'config', 'questions.json');
         }
-        if (!fs.existsSync(descriptorsPath)) {
+        if (!fsSync.existsSync(descriptorsPath)) {
             descriptorsPath = path.join(process.cwd(), 'public', 'config', 'level-descriptors.json');
         }
         

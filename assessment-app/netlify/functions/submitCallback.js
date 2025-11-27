@@ -1,5 +1,6 @@
 const sgMail = require('@sendgrid/mail');
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
 
 exports.handler = async (event, context) => {
@@ -120,10 +121,10 @@ async function formatQuestionsWithAnswers(answers) {
         let descriptorsPath = path.join(__dirname, 'config', 'level-descriptors.json');
         
         // Fallback to public directory if not found
-        if (!fs.existsSync(questionsPath)) {
+        if (!fsSync.existsSync(questionsPath)) {
             questionsPath = path.join(process.cwd(), 'public', 'config', 'questions.json');
         }
-        if (!fs.existsSync(descriptorsPath)) {
+        if (!fsSync.existsSync(descriptorsPath)) {
             descriptorsPath = path.join(process.cwd(), 'public', 'config', 'level-descriptors.json');
         }
         
