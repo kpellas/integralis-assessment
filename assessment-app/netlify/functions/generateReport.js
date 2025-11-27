@@ -9,25 +9,8 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-// Use different puppeteer for local vs production
+// PDF generation disabled - no puppeteer needed
 const isLocal = process.env.NETLIFY_DEV === 'true' || process.env.NODE_ENV === 'development';
-let chromium, puppeteer;
-
-if (isLocal) {
-    // Local development - use full puppeteer with bundled Chromium
-    try {
-        puppeteer = require('puppeteer');
-        console.log('✅ Using bundled puppeteer for local development');
-    } catch (err) {
-        console.log('⚠️ Puppeteer not found, falling back to puppeteer-core');
-        chromium = require('chrome-aws-lambda');
-        puppeteer = require('puppeteer-core');
-    }
-} else {
-    // Production (Netlify)
-    chromium = require('chrome-aws-lambda');
-    puppeteer = require('puppeteer-core');
-}
 const sgMail = require('@sendgrid/mail');
 const fs = require('fs').promises;
 const path = require('path');
@@ -199,66 +182,26 @@ exports.handler = async (event) => {
             timedActions // NEW: timeline-aware actions
         });
 
-        // Generate PDF
-        const pdfBuffer = await generatePdf(reportHtml);
+        // PDF generation disabled
+        const pdfBuffer = null;
 
-        // In local dev, save PDF for testing
-        if (isLocal && downloadOnly) {
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-            const testPath = path.join(process.cwd(), `test-assessment-${timestamp}.pdf`);
-            await fs.writeFile(testPath, pdfBuffer);
-            console.log(`PDF saved for testing at: ${testPath}`);
-        }
+        // PDF generation disabled - skip local testing
 
-        // If download only, return the PDF directly
+        // PDF generation disabled - return error for download requests
         if (downloadOnly) {
-            if (isLocal) {
-                // For local dev, save the PDF temporarily and return a download URL
-                // This avoids the Netlify dev server's base64 decoding issues
-                const tempId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
-                const tempPath = path.join(process.cwd(), '.temp', `assessment-${tempId}.pdf`);
-                
-                // Ensure temp directory exists
-                const tempDir = path.dirname(tempPath);
-                try {
-                    await fs.mkdir(tempDir, { recursive: true });
-                } catch (err) {
-                    // Directory might already exist
-                }
-                
-                // Save PDF temporarily
-                await fs.writeFile(tempPath, pdfBuffer);
-                
-                // Return a redirect to the download endpoint
-                return {
-                    statusCode: 200,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Headers': 'Content-Type',
-                        'Access-Control-Allow-Methods': 'POST, OPTIONS'
-                    },
-                    body: JSON.stringify({
-                        success: true,
-                        downloadUrl: `/.netlify/functions/downloadPdf?file=${tempId}`,
-                        filename: `IT-Capability-Assessment-${new Date().toISOString().split('T')[0]}.pdf`
-                    })
-                };
-            } else {
-                // For production, use base64 encoding as expected by Netlify
-                return {
-                    statusCode: 200,
-                    headers: {
-                        'Content-Type': 'application/pdf',
-                        'Content-Disposition': `attachment; filename="IT-Capability-Assessment-${new Date().toISOString().split('T')[0]}.pdf"`,
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Headers': 'Content-Type',
-                        'Access-Control-Allow-Methods': 'POST, OPTIONS'
-                    },
-                    body: pdfBuffer.toString('base64'),
-                    isBase64Encoded: true
-                };
-            }
+            return {
+                statusCode: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+                },
+                body: JSON.stringify({ 
+                    error: 'PDF download is currently disabled',
+                    message: 'Please use the email option to receive your assessment results'
+                })
+            };
         }
 
         // Otherwise, send email with content
@@ -960,7 +903,8 @@ function generateActionPlan(scores, pillarsData) {
 }
 
 // Generate PDF from HTML
-async function generatePdf(html) {
+// PDF generation disabled - function not used
+/* async function generatePdf(html) {
     let browser = null;
     
     try {
@@ -1022,7 +966,7 @@ async function generatePdf(html) {
             await browser.close();
         }
     }
-}
+} */
 
 // Generate professional report HTML matching Integralis format exactly
 function generateReportHtml(data) {
@@ -2078,7 +2022,7 @@ function getDefaultImprovementsWithIcons(pillarName, level) {
     ).join('');
 }
 
-// Send email with PDF attachment and content in body
+// Send email with results in body (PDF disabled)
 async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
     // Generate a clean text summary for email
     const { contactName, organisation: safeOrganisation, contactPhone, orgSize, industry, scores, overallLevel, insights, recommendedFrameworks, roadmapPhases, timedActions, topActions, tracking, answers } = reportData;
