@@ -23,7 +23,7 @@ const state = {
     scores: null,
     contactInfo: {},
     tracking: {
-        sessionId: generateSessionId(),
+        sessionId: null, // Will be set after checking localStorage
         referrer: document.referrer || 'Direct',
         landingTime: new Date().toISOString(),
         urlParams: Object.fromEntries(new URLSearchParams(window.location.search)),
@@ -38,6 +38,7 @@ function saveProgress() {
             currentQuestion: state.currentQuestion,
             answers: state.answers,
             contactInfo: state.contactInfo,
+            tracking: state.tracking, // Save tracking info including sessionId
             timestamp: Date.now()
         };
         localStorage.setItem('assessmentProgress', JSON.stringify(progress));
@@ -56,6 +57,10 @@ function loadProgress() {
                 state.currentQuestion = progress.currentQuestion || 0;
                 state.answers = progress.answers || {};
                 state.contactInfo = progress.contactInfo || {};
+                // Restore tracking info if it exists, keeping the same sessionId
+                if (progress.tracking && progress.tracking.sessionId) {
+                    state.tracking = progress.tracking;
+                }
                 console.log('✅ Progress restored from localStorage');
                 return true;
             }
@@ -77,7 +82,13 @@ function clearProgress() {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
-    loadProgress(); // Restore previous progress if available
+    const progressLoaded = loadProgress(); // Restore previous progress if available
+    
+    // Only generate new session ID if we didn't load one from saved progress
+    if (!progressLoaded || !state.tracking.sessionId) {
+        state.tracking.sessionId = generateSessionId();
+    }
+    
     setupEventListeners();
 });
 
