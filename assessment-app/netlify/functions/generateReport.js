@@ -2187,7 +2187,7 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                                     <p style="margin:0 0 16px 0; font-style:italic; color:#555; font-size:15px; line-height:24px;">${pillar.narrative}</p>
 
                                     <p style="margin:0 0 4px 0; font-weight:600; font-size:15px; line-height:24px;">Strengths</p>
-                                    <ul style="margin:0 0 16px 20px; padding:0; font-size:15px; line-height:24px;">
+                                    <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
                                         ${insights.strengths.filter(s => s.pillar === pillar.name).slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('') 
                                         || '<li style="margin-bottom:4px;">No strong capabilities identified in this area.</li>'}
                                     </ul>
