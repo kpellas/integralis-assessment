@@ -485,13 +485,19 @@ function determineLevel(score) {
 // Capture assessment results automatically for BCC
 async function captureAssessmentResults() {
     try {
+        // Transform answers to q1, q2 format expected by backend
+        const formattedAnswers = {};
+        Object.keys(state.answers).forEach(key => {
+            formattedAnswers[`q${key}`] = state.answers[key];
+        });
+        
         const response = await fetch('/.netlify/functions/captureAssessment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                answers: state.answers,
+                answers: formattedAnswers,
                 tracking: {
                     ...state.tracking,
                     completionTime: new Date().toISOString()
@@ -634,6 +640,12 @@ async function submitAssessment() {
     document.getElementById('loading-overlay').style.display = 'flex';
 
     try {
+        // Transform answers to q1, q2 format expected by backend
+        const formattedAnswers = {};
+        Object.keys(state.answers).forEach(key => {
+            formattedAnswers[`q${key}`] = state.answers[key];
+        });
+        
         const payload = {
             organisation: state.contactInfo.organisation,
             contactName: state.contactInfo.name,
@@ -642,7 +654,7 @@ async function submitAssessment() {
             orgSize: state.contactInfo.orgSize || '',
             industry: state.contactInfo.industry || '',
             industryOther: state.contactInfo.industryOther || '',
-            answers: state.answers,
+            answers: formattedAnswers,
             tracking: {
                 ...state.tracking,
                 completionTime: new Date().toISOString()
