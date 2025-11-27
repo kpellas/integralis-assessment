@@ -351,7 +351,8 @@ function calculateScores(answers, questionsData, pillarsData, pillarNarratives) 
         
         pillarQuestions.forEach(question => {
             // Numeric safety: coerce to numbers and validate ranges
-            const rawAnswer = answers[question.id];
+            const answerKey = `q${question.id}`;
+            const rawAnswer = answers[answerKey];
             const answerValue = Math.max(0, Math.min(100, Number(rawAnswer) || 0)); // Clamp 0-100
             const weight = Number(question.weight) || 1; // Default weight to 1 if missing/invalid
             

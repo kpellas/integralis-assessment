@@ -107,6 +107,8 @@ exports.handler = async (event, context) => {
 
 // Basic score calculation (simplified version)
 function calculateScores(answers) {
+    console.log('calculateScores received answers:', answers);
+    
     const pillarQuestions = {
         'pillar1': [1, 2, 3, 4, 5, 6, 7, 8],
         'pillar2': [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -126,13 +128,19 @@ function calculateScores(answers) {
     
     Object.keys(pillarQuestions).forEach(pillarKey => {
         const questions = pillarQuestions[pillarKey];
+        console.log(`Processing ${pillarKey} with questions:`, questions);
+        
         const pillarTotal = questions.reduce((sum, qNum) => {
             const answerKey = `q${qNum}`;
-            return sum + (answers[answerKey] || 0);
+            const value = answers[answerKey] || 0;
+            console.log(`  ${answerKey}: ${value} (type: ${typeof value})`);
+            return sum + (parseInt(value) || 0);
         }, 0);
         
+        console.log(`${pillarKey} total: ${pillarTotal}, questions.length: ${questions.length}`);
         const pillarScore = Math.round((pillarTotal / (questions.length * 100)) * 100);
         const pillarLevel = determineLevel(pillarScore);
+        console.log(`${pillarKey} score: ${pillarScore}%`);
         
         pillars[pillarKey] = {
             name: pillarNames[pillarKey],

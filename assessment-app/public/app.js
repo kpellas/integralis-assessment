@@ -491,6 +491,9 @@ async function captureAssessmentResults() {
             formattedAnswers[`q${key}`] = state.answers[key];
         });
         
+        console.log('Capture - Original answers:', state.answers);
+        console.log('Capture - Formatted answers:', formattedAnswers);
+        
         const response = await fetch('/.netlify/functions/captureAssessment', {
             method: 'POST',
             headers: {
@@ -516,6 +519,7 @@ async function captureAssessmentResults() {
 // Show summary page with basic results
 function showSummary() {
     // Automatically capture results for BCC (non-blocking)
+    console.log('ShowSummary called with answers:', state.answers);
     captureAssessmentResults();
     
     const summaryDiv = document.getElementById('summary-results');
@@ -645,6 +649,9 @@ async function submitAssessment() {
         Object.keys(state.answers).forEach(key => {
             formattedAnswers[`q${key}`] = state.answers[key];
         });
+        
+        console.log('Original answers:', state.answers);
+        console.log('Formatted answers for backend:', formattedAnswers);
         
         const payload = {
             organisation: state.contactInfo.organisation,
