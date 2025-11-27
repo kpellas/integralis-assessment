@@ -2368,15 +2368,19 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                 <!-- Next Steps CTA -->
                 <tr>
                     <td bgcolor="#ffffff" style="padding:0 35px 35px 35px; font-family:'Segoe UI',Arial,sans-serif;">
-                        <div style="background:#e8f4f8; padding:25px; border-left:4px solid #2B4F72;">
-                            <h3 style="margin:0 0 16px 0; color:#2B4F72; font-size:18px; font-weight:600;">Next Step: Discuss Your Results</h3>
-                        <p style="margin:0 0 12px 0; font-size:15px; color:#333; line-height:24px;">
-                            If you'd like a walkthrough of your assessment results or help shaping your 30–90 day plan, reply to this email and we'll offer a few time options that work for you.
-                        </p>
-                        <p style="margin:0; font-size:15px; color:#333; line-height:24px;">
-                            Or email us directly: <strong>assessment@integralis.com.au</strong>
-                        </p>
-                        </div>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td bgcolor="#e8f4f8" style="border-left:3px solid #2B4F72; padding:16px; font-family:'Segoe UI',Arial,sans-serif;">
+                                    <h3 style="margin:0 0 16px 0; color:#2B4F72; font-size:18px; font-weight:600;">Next Step: Discuss Your Results</h3>
+                                    <p style="margin:0 0 12px 0; font-size:15px; color:#333; line-height:24px;">
+                                        If you'd like a walkthrough of your assessment results or help shaping your 30–90 day plan, reply to this email and we'll offer a few time options that work for you.
+                                    </p>
+                                    <p style="margin:0; font-size:15px; color:#333; line-height:24px;">
+                                        Or email us directly: <strong>assessment@integralis.com.au</strong>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
                 
