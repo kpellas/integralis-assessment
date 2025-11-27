@@ -5,6 +5,7 @@
 
 [functions]
   node_bundler = "esbuild"
+  included_files = ["assessment-app/netlify/functions/config/**"]
   
 [dev]
   publish = "public"
