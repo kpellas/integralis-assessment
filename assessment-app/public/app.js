@@ -653,7 +653,9 @@ async function submitAssessment() {
         });
 
         if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
+            const errorData = await response.json();
+            console.error('Server error details:', errorData);
+            throw new Error(`Server error: ${response.status}. ${errorData.debugInfo || errorData.details || ''}`);
         }
 
         const result = await response.json();
@@ -698,7 +700,9 @@ async function submitCallbackRequest(data) {
         });
 
         if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
+            const errorData = await response.json();
+            console.error('Server error details:', errorData);
+            throw new Error(`Server error: ${response.status}. ${errorData.debugInfo || errorData.details || ''}`);
         }
 
         const result = await response.json();

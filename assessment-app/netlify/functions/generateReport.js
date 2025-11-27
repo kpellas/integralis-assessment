@@ -303,6 +303,22 @@ exports.handler = async (event) => {
         console.error('Error processing assessment:', error);
         console.error('Error stack:', error.stack);
         console.error('Error details:', error.response?.body || error.response || 'No response details');
+        
+        // More detailed error info for debugging
+        let errorMessage = error.message || 'Unknown error';
+        let debugDetails = '';
+        
+        // Check for SendGrid errors
+        if (error.response?.body?.errors) {
+            debugDetails = error.response.body.errors.map(e => e.message).join(', ');
+        } else if (error.code === 'ENOTFOUND') {
+            debugDetails = 'Cannot reach SendGrid API';
+        } else if (error.message?.includes('Unauthorized')) {
+            debugDetails = 'SendGrid API key may be invalid';
+        } else if (error.message?.includes('chrome') || error.message?.includes('puppeteer')) {
+            debugDetails = 'PDF generation failed - Chrome/Puppeteer issue';
+        }
+        
         return {
             statusCode: 500,
             headers: {
@@ -313,9 +329,10 @@ exports.handler = async (event) => {
             },
             body: JSON.stringify({ 
                 error: 'Failed to process assessment',
-                details: error.message || 'Unknown error',
-                // Include more details in production for debugging
-                debugInfo: error.response?.body?.errors || error.toString()
+                details: errorMessage,
+                debugInfo: debugDetails || error.toString(),
+                // Add timestamp for log correlation
+                timestamp: new Date().toISOString()
             })
         };
     }
