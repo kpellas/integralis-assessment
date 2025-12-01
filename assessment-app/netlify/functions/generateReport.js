@@ -233,6 +233,8 @@ exports.handler = async (event) => {
                 success: true,
                 overallScore: scores.overall,
                 overallLevel: overallLevel,
+                insights: insights,  // Include insights for testing
+                scores: scores,      // Include full scores for testing
                 pillarScores: scores.pillars.map(p => ({
                     name: p.name,
                     score: p.score,
@@ -456,37 +458,110 @@ function determineMaturityLevel(score, narratives) {
 function identifyInsights(answers, questionsData, pillarsData) {
     const questionsList = Object.values(questionsData);
 
-    const strengths = questionsList
-        .filter(q => (answers[q.id] ?? 0) >= 80)
-        .map(q => ({
+    // Build a scored list for reuse
+    const scoredQuestions = questionsList.map(q => {
+        const score = answers[`q${q.id}`] ?? 0;
+        return {
             question: q,
-            score: answers[q.id],
-            pillar: pillarsData[q.pillar_id].name
-        }))
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 5)
-        .map(item => ({
-            pillar: item.pillar,
-            label: item.question.short_label,
-            text: item.question.strength_text
-        }));
+            score,
+            pillarId: q.pillar_id,
+            pillarName: pillarsData[q.pillar_id]?.name || q.pillar_id
+        };
+    });
+    
+    // Calculate pillar scores to determine which strengths qualify
+    const pillarScores = {};
+    const pillarQuestionCounts = {};
+    
+    Object.values(pillarsData).forEach(pillar => {
+        const pillarQuestions = scoredQuestions.filter(q => q.pillarId === pillar.id);
+        const pillarTotal = pillarQuestions.reduce((sum, q) => sum + q.score, 0);
+        const pillarAvg = pillarQuestions.length > 0 ? Math.round(pillarTotal / pillarQuestions.length) : 0;
+        pillarScores[pillar.id] = pillarAvg;
+        
+        // Count how many questions in this pillar are ≥80%
+        const highScoreCount = pillarQuestions.filter(q => q.score >= 80).length;
+        pillarQuestionCounts[pillar.id] = highScoreCount;
+    });
 
-    const gaps = questionsList
-        .filter(q => (answers[q.id] ?? 0) <= 40)
-        .map(q => ({
-            question: q,
-            score: answers[q.id],
-            pillar: pillarsData[q.pillar_id].name
-        }))
-        .sort((a, b) => a.score - b.score)
-        .slice(0, 5)
-        .map(item => ({
-            pillar: item.pillar,
-            label: item.question.short_label,
-            text: item.question.gap_text
-        }));
+    // Updated banding as per requirements:
+    // - strengths: ≥80
+    // - gaps: ≤40  
+    // - upliftAreas: 41-60
+    // - optimisationAreas: 61-79
+    
+    const gapRaw = scoredQuestions.filter(item => item.score <= 40);
+    const upliftRaw = scoredQuestions.filter(item => item.score > 40 && item.score <= 60);
+    const optimisationRaw = scoredQuestions.filter(item => item.score > 60 && item.score < 80);
+    
+    // Create a set of issue themes to prevent contradictions
+    const issueThemes = new Set();
+    
+    // Check for backup/DR related issues (questions 2 and 19)
+    [...gapRaw, ...upliftRaw].forEach(item => {
+        const label = item.question.short_label.toLowerCase();
+        // Mark backup/DR as having issues if ANY related question is problematic
+        if (label.includes('backup') || label.includes('dr') || label.includes('recovery')) {
+            issueThemes.add('backup_dr');
+        }
+        // Add other thematic checks as needed
+        if (label.includes('security') && label.includes('configuration')) {
+            issueThemes.add('security_config');
+        }
+    });
+    
+    const strengthRaw = scoredQuestions.filter(item => {
+        // Include any item ≥80% as a strength (simplified logic)
+        if (item.score < 80) {
+            return false;
+        }
+        
+        // Prevent thematic contradictions
+        const label = item.question.short_label.toLowerCase();
+        if (issueThemes.has('backup_dr') && 
+            (label.includes('backup') || label.includes('dr') || label.includes('recovery'))) {
+            return false; // Don't include backup/DR as strength if there are backup/DR issues
+        }
+        if (issueThemes.has('security_config') && 
+            label.includes('security') && label.includes('configuration')) {
+            return false; // Don't include security config as strength if there are security config issues
+        }
+        
+        return true;
+    });
 
-    return { strengths, gaps };
+    // Helper to convert to the summary shape used in the report/email
+    const toSummaryItems = (items, type) =>
+        items
+            .sort((a, b) => {
+                // For strengths, higher score first; for gaps/uplift, lower score first
+                return type === 'strength' ? b.score - a.score : a.score - b.score;
+            })
+            .map(item => ({
+                pillar: item.pillarName,
+                label: item.question.short_label,
+                // NOTE: for now, we reuse gap_text for uplift/optimisation.
+                // If we later add a mid_band_text to questions.json, plug it in here.
+                text: type === 'strength'
+                    ? item.question.strength_text
+                    : item.question.gap_text,
+                score: item.score
+            }));
+
+    const strengths = toSummaryItems(strengthRaw, 'strength').slice(0, 5);
+    const gaps = toSummaryItems(gapRaw, 'gap').slice(0, 5);
+
+    // Do NOT slice uplift/optimisation here – allow consumers to pick their own limits
+    const upliftAreas = toSummaryItems(upliftRaw, 'gap');
+    const optimisationAreas = toSummaryItems(optimisationRaw, 'gap');
+
+    // Return all four arrays as required
+    return {
+        strengths,
+        gaps,
+        upliftAreas,
+        optimisationAreas
+    };
 }
 
 // Determine recommended frameworks based on pillar-specific scores
@@ -973,31 +1048,180 @@ function generateActionPlan(scores, pillarsData) {
 function generateReportHtml(data) {
     const { organisation, contactName, contactPhone, orgSize, industry, date, scores, overallLevel, insights, recommendedFrameworks, actionPlan, roadmapPhases, pillars, narratives, answers, questions, timedActions } = data;
     
+    // Helper to transform strength text into action-oriented optimisation text
+    const transformToOptimisationTextHtml = (strengthText, label) => {
+        // Common transformations for action-oriented language
+        const transformations = {
+            // Device management
+            'managed via a central platform': 'Expand device management to cover 100% of endpoints and standardise baseline configurations',
+            'centrally managed': 'Extend centralised management to all device types and automate compliance checking',
+            
+            // Recovery and backups
+            'dependable and tested': 'Increase the frequency and scope of recovery testing to include complex, multi-system scenarios',
+            'reliable and tested': 'Automate recovery testing and expand to cover edge cases and disaster scenarios',
+            
+            // Service desk / ITSM
+            'well-documented and followed': 'Introduce XLAs linked to user satisfaction and business outcomes',
+            'structured and reliable': 'Automate handoffs and approvals to further reduce handling time and manual rework',
+            
+            // MFA and identity
+            'fully enforced': 'Extend conditional access policies and implement risk-based authentication',
+            'centralised with strong': 'Integrate identity lifecycle events with downstream systems to eliminate manual access changes',
+            
+            // Compliance and baselines
+            'well-defined and consistently': 'Automate compliance checks and integrate results into risk reporting dashboards',
+            'clear governance': 'Introduce continuous control monitoring to reduce reliance on periodic manual reviews',
+            
+            // Patching
+            'consistently performed': 'Automate patch deployment and reduce mean time to patch for critical vulnerabilities',
+            'defined schedule': 'Implement zero-downtime patching strategies and automated rollback capabilities',
+            
+            // General patterns
+            'in place': 'Enhance automation and expand coverage to eliminate remaining manual processes',
+            'documented': 'Digitise documentation and implement automated validation of procedures',
+            'consistent': 'Standardise across all business units and implement continuous improvement metrics',
+            'reliable': 'Implement predictive analytics and proactive remediation capabilities',
+            'established': 'Mature the process with automation and integrate with broader ecosystem'
+        };
+        
+        // Check for specific patterns and return optimised text
+        for (const [pattern, replacement] of Object.entries(transformations)) {
+            if (strengthText.toLowerCase().includes(pattern.toLowerCase())) {
+                return replacement;
+            }
+        }
+        
+        // Generic fallback transformations based on keywords
+        if (strengthText.includes('enforced') || strengthText.includes('implemented')) {
+            return `Expand and automate ${label.toLowerCase()} to achieve full coverage and reduce manual overhead`;
+        }
+        if (strengthText.includes('documented') || strengthText.includes('defined')) {
+            return `Mature ${label.toLowerCase()} through automation and continuous improvement practices`;
+        }
+        if (strengthText.includes('process') || strengthText.includes('procedure')) {
+            return `Optimise ${label.toLowerCase()} with automation, metrics, and predictive capabilities`;
+        }
+        
+        // Ultimate fallback
+        return `Further enhance ${label.toLowerCase()} through automation and process optimisation`;
+    };
+    
+    // Derive top issues - smart selection logic
+    const hasCriticalGaps = insights.gaps && insights.gaps.length > 0;
+    let topIssues;
+    
+    if (hasCriticalGaps) {
+        // If there are gaps (≤40%), show only those
+        topIssues = insights.gaps.slice(0, 5);
+    } else if (insights.upliftAreas && insights.upliftAreas.length > 0) {
+        // If no gaps but upliftAreas (41-60) exist, show 3-5 of them
+        // Sort by score (lowest first) for priority
+        topIssues = insights.upliftAreas
+            .sort((a, b) => a.score - b.score)
+            .slice(0, 5);
+    } else {
+        // Only show generic message if neither gaps nor upliftAreas exist
+        topIssues = [];
+    }
+    
     // Helper to get pillar-specific insights
     const getPillarInsights = (pillarId) => {
+        // Get the pillar average score
         const pillarQuestions = Object.values(questions).filter(q => q.pillar_id === pillarId);
-        const strengths = pillarQuestions
-            .filter(q => answers[q.id] >= 80)
-            .map(q => ({
-                label: q.short_label,
-                text: q.strength_text,
-                score: answers[q.id]
-            }))
-            .sort((a, b) => b.score - a.score);
-        const gaps = pillarQuestions
-            .filter(q => answers[q.id] <= 40)
-            .map(q => ({
-                label: q.short_label,
-                text: q.gap_text,
-                score: answers[q.id]
-            }))
-            .sort((a, b) => a.score - b.score);
+        const pillarScores = pillarQuestions.map(q => answers[`q${q.id}`] ?? 0);
+        const pillarAvg = pillarScores.length > 0 ? Math.round(pillarScores.reduce((a,b) => a+b, 0) / pillarScores.length) : 0;
+        
+        // Count how many questions in this pillar are ≥80%
+        const highScoreCount = pillarScores.filter(s => s >= 80).length;
+
+        const scored = pillarQuestions.map(q => {
+            const score = answers[`q${q.id}`] ?? 0;
+            return { question: q, score };
+        });
+
+        // Get all issues (gaps + uplift) to check for thematic conflicts
+        const allIssues = scored.filter(item => item.score <= 60);
+        const issueThemes = new Set();
+        
+        // Check for backup/DR related issues
+        allIssues.forEach(item => {
+            const label = item.question.short_label.toLowerCase();
+            if (label.includes('backup') || label.includes('dr') || label.includes('recovery')) {
+                issueThemes.add('backup_dr');
+            }
+            if (label.includes('security') && label.includes('configuration')) {
+                issueThemes.add('security_config');
+            }
+        });
+
+        // Strengths: ≥80 (simplified - no pillar-level filtering for per-pillar view)
+        const strengths = scored
+            .filter(item => {
+                if (item.score < 80) {
+                    return false;
+                }
+                
+                // Prevent thematic contradictions
+                const label = item.question.short_label.toLowerCase();
+                if (issueThemes.has('backup_dr') && 
+                    (label.includes('backup') || label.includes('dr') || label.includes('recovery'))) {
+                    return false;
+                }
+                if (issueThemes.has('security_config') && 
+                    label.includes('security') && label.includes('configuration')) {
+                    return false;
+                }
+                
+                return true;
+            })
+            .sort((a, b) => b.score - a.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.strength_text,
+                score: item.score
+            }));
+
+        const gaps = scored
+            .filter(item => item.score <= 40)
+            .sort((a, b) => a.score - b.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.gap_text,
+                score: item.score
+            }));
+
+        const upliftAreas = scored
+            .filter(item => item.score > 40 && item.score <= 60)
+            .sort((a, b) => a.score - b.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.gap_text, // reused for now
+                score: item.score
+            }));
+
+        // Optimisation areas: 61-79 (updated range)
+        const optimisationAreas = scored
+            .filter(item => item.score > 60 && item.score < 80)
+            .sort((a, b) => b.score - a.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: transformToOptimisationTextHtml(item.question.strength_text, item.question.short_label),
+                score: item.score
+            }));
+        
         const allScores = pillarQuestions.map(q => ({
             label: q.short_label,
-            score: answers[q.id],
+            score: answers[`q${q.id}`],
             question: q.full_prompt
         }));
-        return { strengths, gaps, allScores };
+
+        return {
+            strengths,
+            gaps,
+            upliftAreas,
+            optimisationAreas,
+            allScores
+        };
     };
 
     // Sort pillars by score to identify priorities - match assessment.html structure
@@ -1539,19 +1763,36 @@ function generateReportHtml(data) {
             ` : ''}
             
             <h2>Top Priority Issues</h2>
+            
+            ${hasCriticalGaps ? `
             <p style="font-size: 9pt; margin-bottom: 8px;">
                 These issues are drawn from the lowest-scoring questions across all pillars. 
                 They represent the areas with the greatest operational risk, inefficiency, 
                 or potential business impact based on your assessment responses.
             </p>
+            ` : `
+            <p style="font-size: 9pt; margin-bottom: 8px;">
+                Your responses did not identify any severe gaps (≤40%). 
+                The items below represent partially implemented or inconsistently applied practices 
+                where standardising and embedding the approach will materially improve outcomes.
+            </p>
+            `}
+            
+            ${topIssues.length > 0 ? `
             <ul class="gap-list">
-                ${insights.gaps.slice(0, 5).map(gap => `
+                ${topIssues.map(issue => `
                     <li>
-                        ${gap.text}
-                        <em>(${gap.pillar})</em>
+                        ${issue.text}
+                        <em>(${issue.pillar})</em>
                     </li>
                 `).join('')}
             </ul>
+            ` : `
+            <p style="font-size: 9pt; color: #666; margin-top: 4px;">
+                No specific question-level issues were identified. Your answers are highly uniform; 
+                please review the pillar-level narratives and roadmap for your next steps.
+            </p>
+            `}
         </div>
         
         <div class="page-footer">
@@ -2035,6 +2276,225 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
     const secondaryPillars = sortedPillars.filter(p => p.score > 40 && p.score <= 60);
     const establishedPillars = sortedPillars.filter(p => p.score > 60);
     
+    // Define variables for email template
+    const hasCriticalGaps = insights.gaps && insights.gaps.length > 0;
+    let topIssues;
+    
+    if (hasCriticalGaps) {
+        // If there are gaps (≤40%), show only those
+        topIssues = insights.gaps.slice(0, 5);
+    } else if (insights.upliftAreas && insights.upliftAreas.length > 0) {
+        // If no gaps but upliftAreas (41-60) exist, show 3-5 of them
+        // Sort by score (lowest first) for priority
+        topIssues = insights.upliftAreas
+            .sort((a, b) => a.score - b.score)
+            .slice(0, 5);
+    } else {
+        // Only show generic message if neither gaps nor upliftAreas exist
+        topIssues = [];
+    }
+    
+    // Helper function to get generic strength text based on pillar score
+    const getGenericPillarStrengthText = (pillarScore) => {
+        if (pillarScore >= 80) return 'Strong, consistently applied practices are in place.';
+        if (pillarScore >= 55) return 'Foundational and some advanced practices exist, but further consistency is needed before they can be considered standout strengths.';
+        if (pillarScore >= 40) return 'Foundational practices exist but are not yet consistently applied across the organisation.';
+        return 'Limited strengths identified in this area.';
+    };
+    
+    // Helper to transform strength text into action-oriented optimisation text
+    const transformToOptimisationText = (strengthText, label) => {
+        // Common transformations for action-oriented language
+        const transformations = {
+            // Device management
+            'managed via a central platform': 'Expand device management to cover 100% of endpoints and standardise baseline configurations',
+            'centrally managed': 'Extend centralised management to all device types and automate compliance checking',
+            
+            // Recovery and backups
+            'dependable and tested': 'Increase the frequency and scope of recovery testing to include complex, multi-system scenarios',
+            'reliable and tested': 'Automate recovery testing and expand to cover edge cases and disaster scenarios',
+            
+            // Service desk / ITSM
+            'well-documented and followed': 'Introduce XLAs linked to user satisfaction and business outcomes',
+            'structured and reliable': 'Automate handoffs and approvals to further reduce handling time and manual rework',
+            
+            // MFA and identity
+            'fully enforced': 'Extend conditional access policies and implement risk-based authentication',
+            'centralised with strong': 'Integrate identity lifecycle events with downstream systems to eliminate manual access changes',
+            
+            // Compliance and baselines
+            'well-defined and consistently': 'Automate compliance checks and integrate results into risk reporting dashboards',
+            'clear governance': 'Introduce continuous control monitoring to reduce reliance on periodic manual reviews',
+            
+            // Patching
+            'consistently performed': 'Automate patch deployment and reduce mean time to patch for critical vulnerabilities',
+            'defined schedule': 'Implement zero-downtime patching strategies and automated rollback capabilities',
+            
+            // General patterns
+            'in place': 'Enhance automation and expand coverage to eliminate remaining manual processes',
+            'documented': 'Digitise documentation and implement automated validation of procedures',
+            'consistent': 'Standardise across all business units and implement continuous improvement metrics',
+            'reliable': 'Implement predictive analytics and proactive remediation capabilities',
+            'established': 'Mature the process with automation and integrate with broader ecosystem'
+        };
+        
+        // Check for specific patterns and return optimised text
+        for (const [pattern, replacement] of Object.entries(transformations)) {
+            if (strengthText.toLowerCase().includes(pattern.toLowerCase())) {
+                return replacement;
+            }
+        }
+        
+        // Generic fallback transformations based on keywords
+        if (strengthText.includes('enforced') || strengthText.includes('implemented')) {
+            return `Expand and automate ${label.toLowerCase()} to achieve full coverage and reduce manual overhead`;
+        }
+        if (strengthText.includes('documented') || strengthText.includes('defined')) {
+            return `Mature ${label.toLowerCase()} through automation and continuous improvement practices`;
+        }
+        if (strengthText.includes('process') || strengthText.includes('procedure')) {
+            return `Optimise ${label.toLowerCase()} with automation, metrics, and predictive capabilities`;
+        }
+        
+        // Ultimate fallback
+        return `Further enhance ${label.toLowerCase()} through automation and process optimisation`;
+    };
+    
+    // Helper to get pillar-specific insights for email
+    const getPillarInsights = (pillarId, topPriorityIssues = []) => {
+        const questionsData = require('./config/questions.json');
+        const pillarsData = require('./config/pillars.json');
+        
+        // Get the pillar average score
+        const pillarQuestions = Object.values(questionsData).filter(q => q.pillar_id === pillarId);
+        const pillarScores = pillarQuestions.map(q => answers[`q${q.id}`] ?? 0);
+        const pillarAvg = pillarScores.length > 0 ? Math.round(pillarScores.reduce((a,b) => a+b, 0) / pillarScores.length) : 0;
+        
+        // Count how many questions in this pillar are ≥80%
+        const highScoreCount = pillarScores.filter(s => s >= 80).length;
+
+        const scored = pillarQuestions.map(q => {
+            const score = answers[`q${q.id}`] ?? 0;
+            return { question: q, score };
+        });
+
+        // Get all issues (gaps + uplift) to check for thematic conflicts
+        const allIssues = scored.filter(item => item.score <= 60);
+        const issueThemes = new Set();
+        
+        // Check for backup/DR related issues
+        allIssues.forEach(item => {
+            const label = item.question.short_label.toLowerCase();
+            if (label.includes('backup') || label.includes('dr') || label.includes('recovery')) {
+                issueThemes.add('backup_dr');
+            }
+            if (label.includes('security') && label.includes('configuration')) {
+                issueThemes.add('security_config');
+            }
+        });
+
+        // Strengths: ≥80 (simplified logic for email)
+        const strengths = scored
+            .filter(item => {
+                if (item.score < 80) {
+                    return false;
+                }
+                
+                // Prevent thematic contradictions
+                const label = item.question.short_label.toLowerCase();
+                if (issueThemes.has('backup_dr') && 
+                    (label.includes('backup') || label.includes('dr') || label.includes('recovery'))) {
+                    return false;
+                }
+                if (issueThemes.has('security_config') && 
+                    label.includes('security') && label.includes('configuration')) {
+                    return false;
+                }
+                
+                return true;
+            })
+            .sort((a, b) => b.score - a.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.strength_text,
+                score: item.score
+            }));
+
+        // Get pillar name for matching with topPriorityIssues
+        const pillarName = pillarsData[pillarId]?.name || pillarId;
+        
+        // Find any top priority issues that belong to this pillar
+        const pillarTopIssues = topPriorityIssues.filter(issue => issue.pillar === pillarName);
+        
+        const gaps = scored
+            .filter(item => item.score <= 40)
+            .sort((a, b) => a.score - b.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.gap_text,
+                score: item.score
+            }));
+
+        const upliftAreas = scored
+            .filter(item => item.score > 40 && item.score <= 60)
+            .sort((a, b) => a.score - b.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.gap_text,
+                score: item.score
+            }));
+            
+        // Ensure any top priority issues for this pillar are included
+        pillarTopIssues.forEach(topIssue => {
+            // Check if this issue is already in gaps or upliftAreas
+            const isInGaps = gaps.some(g => g.text === topIssue.text);
+            const isInUplift = upliftAreas.some(u => u.text === topIssue.text);
+            
+            if (!isInGaps && !isInUplift) {
+                // Add it to the appropriate list based on score
+                if (topIssue.score <= 40) {
+                    gaps.push({
+                        label: topIssue.label,
+                        text: topIssue.text,
+                        score: topIssue.score
+                    });
+                } else if (topIssue.score <= 60) {
+                    upliftAreas.push({
+                        label: topIssue.label,
+                        text: topIssue.text,
+                        score: topIssue.score
+                    });
+                }
+            }
+        });
+        
+        // Re-sort after adding top priority issues
+        gaps.sort((a, b) => a.score - b.score);
+        upliftAreas.sort((a, b) => a.score - b.score);
+
+        // Optimisation areas: 61-79 (updated range)
+        const optimisationAreas = scored
+            .filter(item => item.score > 60 && item.score < 80)
+            .sort((a, b) => b.score - a.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: transformToOptimisationText(item.question.strength_text, item.question.short_label),
+                score: item.score
+            }));
+            
+        // Emerging strengths for fallback display (still 70-79%)
+        const emergingStrengths = scored
+            .filter(item => item.score >= 70 && item.score < 80)
+            .sort((a, b) => b.score - a.score)
+            .map(item => ({
+                label: item.question.short_label,
+                text: item.question.strength_text,
+                score: item.score
+            }));
+
+        return { strengths, gaps, upliftAreas, optimisationAreas, emergingStrengths };
+    };
+    
     const bccEmail = process.env.BCC_EMAIL || 'kelly.pellas@integralis.com.au';
     const msg = {
         to: toEmail,
@@ -2050,12 +2510,25 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
         <td align="center">
             <table role="presentation" width="750" cellpadding="0" cellspacing="0" border="0" style="max-width:750px; border-collapse:collapse;">
                 
-                <!-- Header -->
+                <!-- Header: logo + title with background -->
                 <tr>
-                    <td bgcolor="#2B4F72" style="padding:50px 40px; text-align:center; color:#ffffff; font-family:'Segoe UI',Arial,sans-serif;">
-                        <div style="font-size:28px; font-weight:600; margin-bottom:10px; letter-spacing:2px; color:#ffffff;">INTEGRALIS</div>
-                        <!-- <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAABtCAYAAABXyJO1AAAgAElEQVR4nOy9e3xc1Xnv/X3W3jMajUYjWZZlIYQxxjG24zjGcYgxjiEuIUAAhxBKCM2VAAGS5uTWNm/eNKXpeZsWEnJrenJpz9smedu+Pe1JL5QQ7sRxwCGu4zq2cBxjjJBlWZZ1Gc1lz9rrOX/smdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD262GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QtrqTLZKjBEQAAhxBKCM2VAAGS5uTWNm/eNKXpeZsWEnJpenJpz9smedu+Pe1JL5QQ7sRxwCGu4zq2cBxwCGo4zq2cBxjjJBlWZjGCO4ziGcYgxjiEuIUAAhxBKCM2VAAGS5uTWNm/eNKXpeZsWEnJrenJpz9smedu+Pe1JL5QQ7sRxwCGu4zq2cBxjjJBlWZZ1Gc1lz9rrOX/smdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QturqTLZKjBEQAAhxBKCM2VAACS5uTWNm/eNKXpeZsWEnJrenJpz9smedu+Pe1JL5QQ7sRxwCGu4zq2cBxjjJBlWZZ1Gc1lz9rrOX/smdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/Qu7qTLZKjBEQAAhxBKCM2VAACS5uTWNm/eNKXpeZsWEnJrenJpz9smedu+Pe1JL5QQ7sRxwCGu4zq2cBxjjJBlWZZ1Gc1lz9rrOX/smdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QtCd64K3LkxTz2c+MNAAS5uTWNm/eNKXpeZsWEnJrenJpz9smedu+Pe1JL5QQ7sRxwCGu4zq2cBxjjJBlWZZ1Gc1lz9rrOX/smdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QlJ6/dv4LOZJMz84y5v1j99sHhJo+Ne1JL5QQ7sRxwCGu4zq2cBxjjJBlWZZ1Gc1lz9rrOX/smdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QlJb6qXNK/9xJfFGN2s6t+t8HYgBjwNWo/o05AtadJu1cCl4l8GXA/cgsp6EIcACT7kNFgNUgTtU/XPgdqH1f5VNdilQu1s/fDwJ/6yqMKdyr+ReI/WQV11FFHHXXUUEcdddRRRx/NNdddRRx111FFHHXXUUUcdddRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QtdtRfAf9iKFJvyAWYsOxJKCJ7F7jQ1Ay+yD5eBngn4K63/fhj6s/WgEyzO+PoYYT2V3EYHROb97Zj2RFVGKz1SAmqQWK5DjMdYX4LJrP+xhtRFKJ1z9nqTHf3ymdFIGtkSIeE2v89Hmpl9Wfe1nut6FtRRRx111FFHHXXUUUcdddRRx/PP+T5LsCLAYX8XSYceywZhoNpEc5HBJyFcNDZ4oGsxgdHW0/JWZEjz3dZ66ijjjrqeJnCf74L8EJHbuTfTDHf3y40XIqYK4EuFAOgEsvgtWzF6j+OHczsGb7XD1rf+Myc81DciD762GSLo61CLI2kDBgQBTcaqBsYkqf/K5veMPJcV6+OOuqoo46XCOoEfQaMZx8jzPxDMgweWy4Su0y81lcLTeeguU5UQQziLxyI+aeY0D6ddDr4TbM03gPPuLnko/pHhOM2XuToUmPMNcAmxOtUiAMW8Q9B0z+Epy7/92z/sYFk5/45pV9HHXXUUcfLA3WCXgMu/Huyx3/QatBN6sZuADkHlzFoMQ0RPRUB1aBNxV9pvPkpkdhPNRjuBUZnm0945CqyA0MpDCtVvWvF71wtxH11x9rQfDuASmKxGJYaaNNi7ls6nhySpuyvp+J11FFHHXW8aFG3oU9BYfQjxhbii9W5K6DwXtDloPHorkYfAoKiWr5aBM4e/wHu2KdH7UO7TjuDk0rR9pkPmcAP2x3hZlX3bnAbgDjSMIo6A/k2UBNl6RyaO+Ts0x+SxuEfNLcPB3V7fR111FFHHdWoS+hVyPf+XryYza9B8u8E/QsAQfF4JInT5/xJZf8kBJJu2E9z/qKzvt+6PfAuKrwCcxJCb3b7OHBFT5WcvRwHTU9LZj+LUYm8YYMpFh4QX6ddQ8eeagCInAE9Rc+mIhL9LJL8K3T1SkDHYe4yY4HJN7xMbTdJEo7/DGw2AhKXR96K3hIqj8K0P3F2btaWKaWkMgbztEFGHHXUUUcdddRRRx111FFHHXXUUUcdL3X8/wCQJOy5bF/3bgAAAABJRU5ErkJggg==" alt="Integralis" style="height:60px; margin-bottom:20px;">
-                        <div style="font-size:16px; line-height:1.5;">IT & Cyber Capability Assessment Results</div>
+                    <td align="center" bgcolor="#f5f7fa" style="padding:25px 0 25px 0;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; max-width:750px;">
+                            <tr>
+                                <td align="left" valign="middle" style="padding:0 40px; font-family:Arial, sans-serif;">
+                                    <img src="${process.env.URL || 'https://integralis-assessment.netlify.app'}/logo.png"
+                                         alt="Integralis"
+                                         width="161"
+                                         style="display:block; border:0; outline:none; text-decoration:none;">
+                                </td>
+                                <td align="right" valign="middle" style="padding:0 40px; font-family:Arial, sans-serif; color:#1f4465; font-size:14px;">
+                                    IT & Cyber Capability Assessment Results
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                        <!-- Removed base64 logo: <img src="data:image/png;base64,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" alt="Integralis" style="height:60px; margin-bottom:20px;">
                     </td>
                 </tr>
 
@@ -2149,13 +2622,21 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                     <td bgcolor="#ffffff" style="padding:0 35px 35px 35px; font-family:'Segoe UI',Arial,sans-serif; color:#333;">
                         <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Top Priority Issues</h2>
                         
+                        ${hasCriticalGaps ? `
                         <p style="margin:0 0 16px 0; font-size:15px; color:#4b5563; line-height:24px;">These issues are drawn from your lowest-scoring questions across all pillars and represent the areas with the highest operational risk, cost impact, or friction based on your responses.</p>
+                        ` : topIssues.length > 0 ? `
+                        <p style="margin:0 0 16px 0; font-size:15px; color:#4b5563; line-height:24px;">Your responses did not identify any severe gaps (≤40%). The items below represent partially implemented or inconsistently applied practices where standardising and embedding the approach will materially improve outcomes.</p>
+                        ` : `
+                        <p style="margin:0 0 16px 0; font-size:15px; color:#666; line-height:24px;">Your responses did not identify any severe gaps or partially implemented areas. At this maturity level, the focus is on ongoing optimisation and continuous improvement rather than specific remediation items.</p>
+                        `}
                         
+                        ${topIssues.length > 0 ? `
                         <ul style="margin:0; padding-left:20px; font-size:15px; line-height:24px;">
-                            ${insights.gaps.slice(0, 5).map(gap => `
-                                <li style="margin-bottom:8px;">${gap.text} <span style="color:#777; font-style:italic;">(${gap.pillar})</span></li>
+                            ${topIssues.map(issue => `
+                                <li style="margin-bottom:8px;">${issue.text} <span style="color:#777; font-style:italic;">(${issue.pillar})</span></li>
                             `).join('')}
                         </ul>
+                        ` : ``}
                     </td>
                 </tr>
 
@@ -2163,21 +2644,43 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                 <tr>
                     <td bgcolor="#ffffff" style="padding:0 35px 35px 35px; font-family:'Segoe UI',Arial,sans-serif; color:#333;">
                         <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Key Strengths</h2>
+                        ${insights.strengths && insights.strengths.length >= 2 ? `
                         <ul style="margin:0; padding-left:20px; font-size:15px; line-height:24px;">
                             ${insights.strengths.slice(0,5).map(s => `
                                 <li style="margin-bottom:8px;"><strong>${s.label}</strong>: ${s.text}</li>
                             `).join('')}
                         </ul>
+                        ` : scores.overall <= 30 ? `
+                        <p style="margin:0; font-size:15px; color:#666; line-height:24px;">
+                            No standout strengths (≥80%) were identified. Only limited strengths could be identified at this stage; 
+                            the immediate focus is on establishing and embedding core practices across the organisation.
+                        </p>
+                        ` : sortedPillars.some(p => p.score >= 55) ? `
+                        <p style="margin:0; font-size:15px; color:#666; line-height:24px;">
+                            No standout strengths (≥80%) were identified. Several areas show emerging strengths, 
+                            but practices are not yet consistent or mature enough to be considered clear differentiators. 
+                            The focus for now is on consolidating these emerging strengths and lifting weaker areas to the same standard.
+                        </p>
+                        ` : `
+                        <p style="margin:0; font-size:15px; color:#666; line-height:24px;">
+                            No standout strengths (≥80%) were identified. Foundational practices are in place across most areas, 
+                            but they are only partially implemented or inconsistently applied. 
+                            The focus for now is on standardising and embedding these practices.
+                        </p>
+                        `}
                     </td>
                 </tr>
 
-                <!-- Priority Pillars Section -->
+                <!-- Priority Pillars Section (only show if there are priority pillars) -->
+                ${priorityPillars.length > 0 ? `
                 <tr>
                     <td bgcolor="#ffffff" style="padding:0 35px 35px 35px; font-family:'Segoe UI',Arial,sans-serif; color:#333;">
                         <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Pillars Requiring Uplift</h2>
                         <p style="margin:0 0 20px 0; font-size:15px; color:#4b5563; line-height:24px;">These pillars scored lowest and represent the highest risk and improvement opportunity. They should be the primary focus for the next 3–6 months.</p>
 
-                        ${priorityPillars.map(pillar => `
+                        ${priorityPillars.map(pillar => {
+                            const pillarInsights = getPillarInsights(pillar.id, topIssues);
+                            return `
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
                             <tr>
                                 <td bgcolor="#f8f9fa" style="border-left:4px solid #dc3545; padding:20px; font-family:'Segoe UI',Arial,sans-serif;">
@@ -2187,30 +2690,58 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                                     <p style="margin:0 0 16px 0; font-style:italic; color:#555; font-size:15px; line-height:24px;">${pillar.narrative}</p>
 
                                     <p style="margin:0 0 4px 0; font-weight:600; font-size:15px; line-height:24px;">Strengths</p>
+                                    ${pillarInsights.strengths.length > 0 ? `
                                     <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
-                                        ${insights.strengths.filter(s => s.pillar === pillar.name).slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('') 
-                                        || '<li style="margin-bottom:4px;">No strong capabilities identified in this area.</li>'}
+                                        ${pillarInsights.strengths.slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('')}
                                     </ul>
+                                    ` : pillarInsights.optimisationAreas && pillarInsights.optimisationAreas.length > 0 ? `
+                                    <p style="margin:0 0 8px 0; font-size:15px; line-height:24px; color:#666; font-style:italic;">Emerging strengths:</p>
+                                    <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        ${pillarInsights.optimisationAreas.slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('')}
+                                    </ul>
+                                    ` : `
+                                    <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        <li style="margin-bottom:4px;">${pillar.score <= 40 ? 'Limited strengths identified in this area.' : 'Foundational practices exist but are not yet consistently applied across the organisation.'}</li>
+                                    </ul>
+                                    `}
 
                                     <p style="margin:16px 0 4px 0; font-weight:600; font-size:15px; line-height:24px;">Improvement Areas</p>
+                                    ${pillarInsights.gaps.length > 0 ? `
                                     <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
-                                        ${insights.gaps.filter(g => g.pillar === pillar.name).slice(0,3).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')
-                                        || '<li style="margin-bottom:4px;">Continue strengthening governance and process maturity.</li>'}
+                                        ${pillarInsights.gaps.slice(0,3).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')}
                                     </ul>
+                                    ` : pillarInsights.upliftAreas.length > 0 ? `
+                                    <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        ${pillarInsights.upliftAreas.slice(0,3).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')}
+                                    </ul>
+                                    ` : `
+                                    <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        <li style="margin-bottom:4px;">Continue strengthening governance and process maturity.</li>
+                                    </ul>
+                                    `}
                                 </td>
                             </tr>
-                        </table>`).join('')}
+                        </table>`;
+                        }).join('')}
                     </td>
                 </tr>
+                ` : ''}
 
                 <!-- Other Pillars Section -->
                 ${otherPillars.length > 0 ? `
                 <tr>
                     <td bgcolor="#ffffff" style="padding:0 35px 35px 35px; font-family:'Segoe UI',Arial,sans-serif; color:#333;">
+                        ${priorityPillars.length > 0 ? `
                         <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Established Pillars</h2>
                         <p style="margin:0 0 20px 0; font-size:15px; color:#4b5563; line-height:24px;">These pillars are comparatively stronger. The focus here is on optimisation and avoiding regression while uplift work occurs in higher-risk areas.</p>
+                        ` : `
+                        <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Pillar-by-Pillar Insights</h2>
+                        <p style="margin:0 0 20px 0; font-size:15px; color:#4b5563; line-height:24px;">These insights highlight the key strengths and improvement opportunities in each pillar. The focus is on improving consistency and embedding practices across all areas.</p>
+                        `}
 
-                        ${otherPillars.map(pillar => `
+                        ${otherPillars.map(pillar => {
+                            const pillarInsights = getPillarInsights(pillar.id, topIssues);
+                            return `
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
                             <tr>
                                 <td bgcolor="#f8f9fa" style="border-left:4px solid #2B4F72; padding:20px; font-family:'Segoe UI',Arial,sans-serif;">
@@ -2220,19 +2751,43 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                                     <p style="margin:0 0 16px 0; font-style:italic; color:#555; font-size:15px; line-height:24px;">${pillar.narrative}</p>
 
                                     <p style="margin:0 0 4px 0; font-weight:600; font-size:15px; line-height:24px;">Strengths</p>
-                                    <ul style="margin:0 0 16px 20px; padding:0; font-size:15px; line-height:24px;">
-                                        ${insights.strengths.filter(s => s.pillar === pillar.name).slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('') 
-                                        || '<li style="margin-bottom:4px;">Consistent performance maintained in this area.</li>'}
+                                    ${pillarInsights.strengths.length > 0 ? `
+                                    <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        ${pillarInsights.strengths.slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('')}
                                     </ul>
+                                    ` : pillarInsights.optimisationAreas && pillarInsights.optimisationAreas.length > 0 ? `
+                                    <p style="margin:0 0 8px 0; font-size:15px; line-height:24px; color:#666; font-style:italic;">Emerging strengths:</p>
+                                    <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        ${pillarInsights.optimisationAreas.slice(0,2).map(s => `<li style="margin-bottom:4px;">${s.text}</li>`).join('')}
+                                    </ul>
+                                    ` : `
+                                    <ul style="margin:0 0 16px 0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        <li style="margin-bottom:4px;">${pillar.score >= 55 ? 'Foundational and some advanced practices exist, but further consistency is needed before they can be considered standout strengths.' : getGenericPillarStrengthText(pillar.score)}</li>
+                                    </ul>
+                                    `}
 
                                     <p style="margin:16px 0 4px 0; font-weight:600; font-size:15px; line-height:24px;">Optimisation Opportunities</p>
+                                    ${pillarInsights.gaps.length > 0 ? `
                                     <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
-                                        ${insights.gaps.filter(g => g.pillar === pillar.name).slice(0,2).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')
-                                        || '<li style="margin-bottom:4px;">Continue current progress and look for automation and optimisation opportunities.</li>'}
+                                        ${pillarInsights.gaps.slice(0,2).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')}
                                     </ul>
+                                    ` : pillarInsights.upliftAreas.length > 0 ? `
+                                    <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        ${pillarInsights.upliftAreas.slice(0,2).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')}
+                                    </ul>
+                                    ` : pillarInsights.optimisationAreas.length > 0 ? `
+                                    <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        ${pillarInsights.optimisationAreas.slice(0,2).map(g => `<li style="margin-bottom:4px;">${g.text}</li>`).join('')}
+                                    </ul>
+                                    ` : `
+                                    <ul style="margin:0; padding:0 0 0 20px; font-size:15px; line-height:24px;">
+                                        <li style="margin-bottom:4px;">Continue current progress and look for automation and optimisation opportunities.</li>
+                                    </ul>
+                                    `}
                                 </td>
                             </tr>
-                        </table>`).join('')}
+                        </table>`;
+                        }).join('')}
                     </td>
                 </tr>
                 ` : ''}
@@ -2240,12 +2795,19 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                 <!-- Improvement Roadmap Section -->
                 <tr>
                     <td bgcolor="#ffffff" style="padding:0 35px 35px 35px; font-family:'Segoe UI',Arial,sans-serif; color:#333;">
-                        <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Improvement Roadmap (0–90 days)</h2>
+                        <h2 style="margin:0 0 16px 0; color:#2B4F72; font-size:20px; font-weight:600;">Improvement Roadmap</h2>
+                        ${(timedActions && (timedActions.immediate.length > 0 || timedActions.shortTerm.length > 0)) ? `
                         <p style="margin:0 0 20px 0; font-size:14px; color:#4b5563; font-style:italic; line-height:22px;">
                             Timeline note: the 30-day and 30–90 day recommendations reflect priority sequencing based on impact and estimated effort.
                             Actual delivery time may vary depending on resourcing, dependencies, and organisational change capacity.
                         </p>
+                        ` : `
+                        <p style="margin:0 0 20px 0; font-size:15px; color:#4b5563; line-height:24px;">
+                            Given your current maturity level, there are no urgent remediation actions required. The focus is on maintaining excellence through continuous improvement and strategic optimisation.
+                        </p>
+                        `}
 
+        ${(timedActions && (timedActions.immediate.length > 0 || timedActions.shortTerm.length > 0)) ? `
         <table width="100%" cellspacing="0" cellpadding="0" style="margin-bottom:30px;">
             <tr>
                 <td bgcolor="#f8f9fa" style="padding:25px; border-left:4px solid #2B4F72;">
@@ -2269,7 +2831,9 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                                 </ul>`).join('');
                         })()
                         : `<p style="margin:8px 0 0 0; font-size:15px; color:#6b7280;">
-                             No specific 30-day actions identified. Focus on preparing for the 30–90 day initiatives.
+                             ${timedActions && timedActions.shortTerm && timedActions.shortTerm.length > 0 
+                                ? 'No specific 30-day actions identified. Focus on preparing for the 30–90 day initiatives.'
+                                : 'No immediate actions required at this maturity level.'}
                            </p>`
                     }
                 </td>
@@ -2299,12 +2863,15 @@ async function sendEmail(toEmail, toName, organisation, pdfBuffer, reportData) {
                                 </ul>`).join('');
                         })()
                         : `<p style="margin:8px 0 0 0; font-size:15px; color:#6b7280;">
-                             No additional short-term actions identified beyond the immediate priorities.
+                             ${timedActions && timedActions.immediate && timedActions.immediate.length > 0
+                                ? 'No additional short-term actions identified beyond the immediate priorities.'
+                                : 'No structured uplift actions required at this maturity level.'}
                            </p>`
                     }
                 </td>
             </tr>
         </table>
+        ` : ''}
 
         <table width="100%" cellspacing="0" cellpadding="0" style="margin-bottom:30px;">
             <tr>
