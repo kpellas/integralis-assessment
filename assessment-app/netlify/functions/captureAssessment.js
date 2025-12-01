@@ -76,7 +76,7 @@ exports.handler = async (event, context) => {
                 </ul>
                 ` : ''}
                 
-                <p><em>User completed assessment but did not request detailed report.</em></p>
+                <p><em>The user has completed the assessment. If they requested to receive the detailed report via email, a confirmation email will be sent shortly.</em></p>
                 
                 <h3>Detailed Q&A Responses:</h3>
                 <div style="font-family:monospace; font-size:12px;">
@@ -172,23 +172,9 @@ function determineLevel(score) {
 // Load questions and format with answers
 async function formatQuestionsWithAnswers(answers) {
     try {
-        // Try function directory first (for Netlify), then public directory (for local)
-        let questionsPath = path.join(__dirname, 'config', 'questions.json');
-        let descriptorsPath = path.join(__dirname, 'config', 'level-descriptors.json');
-        
-        // Fallback to public directory if not found
-        if (!fsSync.existsSync(questionsPath)) {
-            questionsPath = path.join(process.cwd(), 'public', 'config', 'questions.json');
-        }
-        if (!fsSync.existsSync(descriptorsPath)) {
-            descriptorsPath = path.join(process.cwd(), 'public', 'config', 'level-descriptors.json');
-        }
-        
-        const questionsData = await fs.readFile(questionsPath, 'utf8');
-        const descriptorsData = await fs.readFile(descriptorsPath, 'utf8');
-        
-        const questions = JSON.parse(questionsData);
-        const descriptors = JSON.parse(descriptorsData);
+        // Load config files directly from the config directory
+        const questions = require('./config/questions.json');
+        const descriptors = require('./config/level-descriptors.json');
         
         let formatted = '';
         for (let i = 1; i <= 35; i++) {
@@ -205,7 +191,24 @@ async function formatQuestionsWithAnswers(answers) {
                 
                 formatted += `<strong>Q${i}: ${question.short_label}</strong><br>`;
                 formatted += `${question.full_prompt}<br>`;
-                formatted += `<span style="color: #007bff;">→ Selected: ${fullAnswerText}</span><br><br>`;
+                
+                // Show all possible answers with the selected one highlighted
+                formatted += '<div style="margin-left: 20px; margin-top: 5px;">';
+                for (let level = 0; level <= 5; level++) {
+                    const levelValue = level * 20;
+                    const levelKey = level.toString();
+                    const levelText = descriptor && descriptor.levels && descriptor.levels[levelKey] 
+                        ? descriptor.levels[levelKey]
+                        : getSelectedOption(levelValue);
+                    
+                    const isSelected = answerValue === levelValue;
+                    if (isSelected) {
+                        formatted += `<div style="color: #007bff; font-weight: bold; margin: 2px 0;">→ ${levelText}</div>`;
+                    } else {
+                        formatted += `<div style="color: #999; margin: 2px 0; padding-left: 12px;">${levelText}</div>`;
+                    }
+                }
+                formatted += '</div><br>';
             }
         }
         

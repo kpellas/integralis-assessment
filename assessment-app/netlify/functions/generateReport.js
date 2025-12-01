@@ -3097,7 +3097,24 @@ async function formatQuestionsWithAnswers(answers) {
                 
                 formatted += `<strong>Q${i}: ${question.short_label}</strong><br>`;
                 formatted += `${question.full_prompt}<br>`;
-                formatted += `<span style="color: #007bff;">→ Selected: ${fullAnswerText}</span><br><br>`;
+                
+                // Show all possible answers with the selected one highlighted
+                formatted += '<div style="margin-left: 20px; margin-top: 5px;">';
+                for (let level = 0; level <= 5; level++) {
+                    const levelValue = level * 20;
+                    const levelKey = level.toString();
+                    const levelText = descriptor && descriptor.levels && descriptor.levels[levelKey] 
+                        ? descriptor.levels[levelKey]
+                        : getSelectedOption(levelValue);
+                    
+                    const isSelected = answerValue === levelValue;
+                    if (isSelected) {
+                        formatted += `<div style="color: #007bff; font-weight: bold; margin: 2px 0;">→ ${levelText}</div>`;
+                    } else {
+                        formatted += `<div style="color: #999; margin: 2px 0; padding-left: 12px;">${levelText}</div>`;
+                    }
+                }
+                formatted += '</div><br>';
             }
         }
         

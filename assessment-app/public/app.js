@@ -90,6 +90,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     setupEventListeners();
+    
+    // If progress was loaded, show the correct question
+    if (progressLoaded && state.currentQuestion > 0) {
+        showQuestion(state.currentQuestion);
+    }
 });
 
 // Load data from config files
@@ -692,6 +697,9 @@ async function submitAssessment() {
 
         // Hide loading overlay
         document.getElementById('loading-overlay').style.display = 'none';
+        
+        // Clear localStorage after successful submission
+        clearProgress();
 
         // Show confirmation page
         showPage('confirmation-page');
